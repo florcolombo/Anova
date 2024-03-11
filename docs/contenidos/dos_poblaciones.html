@@ -221,7 +221,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div style="text-align: justify">
 
 <p>Análisis comparativo en el que se presenta un <strong>factor con dos niveles</strong>. Cada nivel se refiere a una población diferente. El objetivo es comparar esas poblaciones en función de una <strong>variable (respuesta) continua y gaussiana</strong>.</p>
-<p>Los datos corresponden a una muestra de deportistas federados, de 18 a 22 años, que entrenan y compiten en distintos clubes de la ciudad de Rosario. Se desea conocer si en promedio los hombres tienden a realizar el “Test de Coordinación de 4 tramos de 10 metros cada uno” en menos tiempo (segundos) que las mujeres.</p>
+<p>Los datos corresponden a una muestra de deportistas federados, de 18 a 22 años, que entrenan y compiten en distintos clubes de la ciudad de Rosario. Se desea conocer si en promedio los hombres tienden a realizar el “Test de Coordinación de 4 tramos de 10 metros cada uno” en diferentes tiempos (segundos) que las mujeres.</p>
+<p>En <a href="https://github.com/florcolombo/Anova/blob/main/base_deportistas.xlsx">este link</a> encontrarás la base de datos utilizada para el caso en estudio.</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Librerías</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
@@ -242,7 +243,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 6     6 Femenino CLUB ATLETICO PROVINCIAL                 Volleyba…  15.1     51</code></pre>
 </div>
 </div>
-<p>En primer lugar, se debe evaluar el cumplimiento de normalidad en ambas poblaciones/muestra/grupos. Se puede comprobar gráficamente a partir de histogramas y también a través de la prueba de Shapiro-Wilks, en el cual se prueba <span class="math inline">\(H_0) \ Y \sim \mathcal{N}(\mu,\sigma^2)\)</span> versus <span class="math inline">\(H_1) \ Y \nsim \mathcal{N}(\mu,\sigma^2)\)</span>. La variable respuesta <em>Y</em> representa el tiempo (en segundos) que tarda un deportista en realizar el test de coordinación.</p>
+<p>En primer lugar, se evalúa el cumplimiento de normalidad en ambos grupos. Se puede comprobar gráficamente a partir de histogramas y también a través de la prueba de Shapiro-Wilks, en la cual se prueba <span class="math inline">\(H_0) \ Y \sim \mathcal{N}(\mu,\sigma^2)\)</span> versus <span class="math inline">\(H_1) \ Y \nsim \mathcal{N}(\mu,\sigma^2)\)</span>. La variable en estudio es el tiempo (en segundos) que tarda un deportista en realizar el test de coordinación ().</p>
+<p>Nota: Por el Teorema Central del Límite, si se cuenta con muchas observaciones no sería necesario evaluar la normalidad de la variable en estudio.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -270,7 +272,7 @@ data:  base$coord[base$sexo == "Masculino"]
 W = 0.99461, p-value = 0.8573</code></pre>
 </div>
 </div>
-<p>En este caso, se concluye que en base a la evidencia muestral y con un nivel de significación del <span class="math inline">\(5\%\)</span> ambas poblaciones se distribuyen de manera normal.</p>
+<p>Tanto por los histogramas como por los resultados de la prueba de Shapiro-Wilks puede pensarse que el tiempo para realizar el test de coordinación tiene distribución gaussiana para ambos grupos (Femenino y Masculino).</p>
 <p>Luego, se estudian medidas descriptivas y gráfico de boxplots para ambos grupos.</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Estadísticas descriptivas</span></span>
@@ -278,15 +280,15 @@ W = 0.99461, p-value = 0.8573</code></pre>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(sexo) <span class="sc">%&gt;%</span> </span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">n =</span> <span class="fu">n</span>(),</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">media =</span> <span class="fu">mean</span>(coord),</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">desvio =</span> <span class="fu">sd</span>(coord)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">promedio =</span> <span class="fu">mean</span>(coord),</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">desvio_estandar =</span> <span class="fu">sd</span>(coord)</span>
 <span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 2 × 4
-  sexo          n media desvio
-  &lt;chr&gt;     &lt;int&gt; &lt;dbl&gt;  &lt;dbl&gt;
-1 Femenino    130  15.8   1.22
-2 Masculino   149  14.0   1.30</code></pre>
+  sexo          n promedio desvio_estandar
+  &lt;chr&gt;     &lt;int&gt;    &lt;dbl&gt;           &lt;dbl&gt;
+1 Femenino    130     15.8            1.22
+2 Masculino   149     14.0            1.30</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Boxplots</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(base, <span class="fu">aes</span>(<span class="at">x =</span> sexo, <span class="at">y =</span> coord)) <span class="sc">+</span></span>
@@ -305,7 +307,7 @@ W = 0.99461, p-value = 0.8573</code></pre>
 </div>
 </div>
 <p>Se puede observar que los tiempos en realizar el test de coordinación en mujeres son levemente mayores que los tiempos obtenidos por los varones. A continuación, se evaluará si esta diferencia es significativa.</p>
-<p>Antes de llevar a cabo la prueba de igualdad de medias, se debe chequear si las variancias entre grupos son iguales: <span class="math inline">\(H_0) \ \sigma_F^2=\sigma_M^2\)</span> versus <span class="math inline">\(H_1) \ \sigma_F^2 \neq \sigma_M^2\)</span>.</p>
+<p>Antes de llevar a cabo la comprobación de igualdad de medias usando la prueba t-student, se debe chequear si las variancias entre grupos son iguales: <span class="math inline">\(H_0) \ \frac{\sigma_F^2}{\sigma_M^2} = 1\)</span> versus <span class="math inline">\(H_1) \ \frac{\sigma_F^2}{\sigma_M^2} \neq 1\)</span>.</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Test de igualdad de variancias</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">var.test</span>(coord <span class="sc">~</span> sexo, base, <span class="at">alternative =</span> <span class="st">"two.sided"</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -323,31 +325,29 @@ ratio of variances
          0.8810328 </code></pre>
 </div>
 </div>
-<p>Se cumple la igualdad de variancias, por lo que se postula la prueba de igualdad de medias: <span class="math inline">\(H_0) \ \mu_F=\mu_M\)</span> versus <span class="math inline">\(H_1) \ \mu_F &gt; \mu_M\)</span>.</p>
-<ul>
-<li>1º enfoque: <strong>Prueba “t de student”</strong></li>
-</ul>
+<p>No hay evidencia suficiente para rechazar la hipótesis nula. Luego, se postula la prueba de igualdad de medias: <span class="math inline">\(H_0) \ \mu_F - \mu_M = 0\)</span> versus <span class="math inline">\(H_1) \ \mu_F - \mu_M \neq 0\)</span>.</p>
+<p>La <strong>Prueba “t de student”</strong> usa como estadística:</p>
+<p>$ t_{n_F + n_M -2; &nbsp;s^2_a} $</p>
+<p>siendo <span class="math inline">\(s^2_a\)</span> la variancia amalgamada de ambos grupos.</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Test de medias</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(coord <span class="sc">~</span> sexo, base, <span class="at">alternative =</span> <span class="st">"greater"</span>, <span class="at">var.equal =</span> T)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(coord <span class="sc">~</span> sexo, base, <span class="at">var.equal =</span> T)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Two Sample t-test
 
 data:  coord by sexo
 t = 11.846, df = 277, p-value &lt; 2.2e-16
-alternative hypothesis: true difference in means between group Femenino and group Masculino is greater than 0
+alternative hypothesis: true difference in means between group Femenino and group Masculino is not equal to 0
 95 percent confidence interval:
- 1.540192      Inf
+ 1.492126 2.086865
 sample estimates:
  mean in group Femenino mean in group Masculino 
                15.79131                14.00181 </code></pre>
 </div>
 </div>
-<ul>
-<li>2º enfoque: <strong>ANOVA</strong></li>
-</ul>
-<p>Se postula el siguiente modelo de efectos fijos: <span class="math inline">\(y_{ij} = \mu + \tau_i + e_{ij}, \ i=\overline{1,2} \ \land \ j=\overline{1,n_i}\)</span>, donde:</p>
+<p>Comparación de dos promedio poblacionales usando el enfoque de Análisis de la Variancia (<strong>ANOVA</strong>).</p>
+<p>Se postula el siguiente modelo de efectos fijos: <span class="math inline">\(y_{ij} = \mu_i + e_{ij} = \mu + \tau_i + e_{ij}, \ i=\overline{1,2} \ \land \ j=\overline{1,n_i}\)</span>, donde:</p>
 <ul>
 <li><p><span class="math inline">\(y_{ij}:\)</span> resultado del test de coordinación del deportista <span class="math inline">\(j\)</span> del grupo <span class="math inline">\(i\)</span>.</p></li>
 <li><p><span class="math inline">\(\mu:\)</span> valor de referencia del test de coordinación.</p></li>
@@ -355,7 +355,7 @@ sample estimates:
 <li><p><span class="math inline">\(e_{ij}:\)</span> error aleatorio del deportista <span class="math inline">\(j\)</span> del grupo <span class="math inline">\(i\)</span>.</p></li>
 </ul>
 <p>Además, <span class="math inline">\(e_{ij} \sim \mathcal{N}(0,\sigma^2)\)</span> <em>e independientes.</em></p>
-<p>A continuación, se muestra la tabla ANOVA:</p>
+<p>Se compara a variabilidad entre grupos respecto la variabilidad dentro de los grupos. Ello se resume en la tabla ANOVA:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Tabla ANOVA</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>anova <span class="ot">&lt;-</span> <span class="fu">aov</span>(coord<span class="sc">~</span>sexo, base)</span>
@@ -368,7 +368,11 @@ Residuals   277  438.8    1.58
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 </div>
-<p>Para ambos enfoques, se obtiene que en base a la evidencia muestral y con un nivel de significación del <span class="math inline">\(5\%\)</span>, se rechaza la hipótesis nula, es decir, en promedio a las mujeres les lleva más tiempo realizar el test de coordinación que a los hombres.</p>
+<p>Con ambos enfoques se obtiene que, en base a la evidencia muestral y con un nivel de significación del <span class="math inline">\(5\%\)</span>, se rechaza la hipótesis nula, es decir, en promedio a las mujeres les lleva tiempos diferentes para realizar el test de coordinación que a los hombres.</p>
+<p> - En caso de <span class="math inline">\(H_1\)</span> unilateral, los resultados de la prueba podrían no coincidir con el enfoque .</p>
+<ul>
+<li>Notar que <span class="math inline">\(t^2 = F\)</span>.</li>
+</ul>
 <div>
 
 

@@ -5,66 +5,64 @@ toc: false
 ---
 
 ::: {.grid .title-block}
-
 ::: {.course-details-title-block .g-col-12 .g-col-sm-8 .order-2 .order-sm-1 .text-sm-start}
-
 ::: {.text-center .text-sm-start}
-
 # Análisis de la Variancia {.course-title}
 
-::: {.course-subtitle}
+::: course-subtitle
 <!--Este es el subtitulo...-->
 :::
-
 :::
 
-::: {.course-meta}
-{{< fa graduation-cap >}} &nbsp; Licenciatura en Estadística  
-{{< fa university >}}     &nbsp; Facultad de Ciencias Económicas y Estadística  (UNR)  
-<!--{{< fa calendar-alt >}}   &nbsp; 1° Cuatrimestre 2023-->
-<!--{{< fa clock >}}   &nbsp; Lun -- 11:00 a 13:00 &nbsp; | &nbsp; Mié -- 7:00 a 9:00 &nbsp; | &nbsp; Vie -- 7:00 a 9:00-->
+::: course-meta
+{{< fa graduation-cap >}}   Licenciatura en Estadística\
+{{< fa university >}}   Facultad de Ciencias Económicas y Estadística (UNR)\
+{{< fa check >}}   Fecha de última actualización: 03/2024\
+<!--{{< fa calendar-alt >}}   &nbsp; 1° Cuatrimestre 2023--> <!--{{< fa clock >}}   &nbsp; Lun -- 11:00 a 13:00 &nbsp; | &nbsp; Mié -- 7:00 a 9:00 &nbsp; | &nbsp; Vie -- 7:00 a 9:00-->
 :::
-
 :::
 
 ::: {.g-col-12 .g-col-sm-4 .order-1 .order-sm-2}
-
 ::: {.grid .five-columns}
-
 ::: {.g-col-1 .g-col-sm-0}
 :::
 
 ::: {.g-col-3 .g-col-sm-5}
-<img src="img/anova_img.png" class="img-fluid"><img> 
+<img src="img/anova_img.png" class="img-fluid"/><img />
 :::
 
 ::: {.g-col-1 .g-col-sm-0}
 :::
 :::
-
 :::
-
 :::
-
 
 ## Profesores
 
 ::: {.grid .course-details}
-
 ::: {.g-col-12 .g-col-sm-6}
-
 ### Cristina Cuesta
 
-{{< fa envelope >}} &nbsp; [ccuesta@fcecon.unr.edu.ar](mailto:ccuesta@fcecon.unr.edu.ar)
-<!--* {{< fa    calendar >}} &nbsp; [Consultas: Martes 14:00|14:45](https://calendar.app.google/VgFTvneiTiXBJ7Xx6)-->
+{{< fa envelope >}}   [ccuesta\@fcecon.unr.edu.ar](mailto:ccuesta@fcecon.unr.edu.ar) <!--* {{< fa    calendar >}} &nbsp; [Consultas: Martes 14:00|14:45](https://calendar.app.google/VgFTvneiTiXBJ7Xx6)-->
+:::
+
+::: {.g-col-12 .g-col-sm-6}
+### Gino Bartolelli
+
+{{< fa envelope >}}   [gino.bartolelli\@fcecon.unr.edu.ar](mailto:gino.bartolelli@fcecon.unr.edu.ar) <!--* {{< fa calendar >}} &nbsp; Consultas: Jueves 9:00-->
+:::
+:::
+
+## Colaboración
+
+::: {.grid .course-details}
+::: {.g-col-12 .g-col-sm-6}
+### Florencia Colombo
 
 :::
 
 ::: {.g-col-12 .g-col-sm-6}
+{{< fa calendar-alt >}}   Fecha de creación: 03/2024\
 
-### Gino Bartolelli
-
-{{< fa envelope >}} &nbsp; [gino.bartolelli@fcecon.unr.edu.ar](mailto:gino.bartolelli@fcecon.unr.edu.ar)
-<!--* {{< fa calendar >}} &nbsp; Consultas: Jueves 9:00-->
 :::
 :::

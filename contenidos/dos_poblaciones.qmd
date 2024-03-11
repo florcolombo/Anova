@@ -11,7 +11,9 @@ knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE,
 
 Análisis comparativo en el que se presenta un **factor con dos niveles**. Cada nivel se refiere a una población diferente. El objetivo es comparar esas poblaciones en función de una **variable (respuesta) continua y gaussiana**.
 
-Los datos corresponden a una muestra de deportistas federados, de 18 a 22 años, que entrenan y compiten en distintos clubes de la ciudad de Rosario. Se desea conocer si en promedio los hombres tienden a realizar el "Test de Coordinación de 4 tramos de 10 metros cada uno" en menos tiempo (segundos) que las mujeres.
+Los datos corresponden a una muestra de deportistas federados, de 18 a 22 años, que entrenan y compiten en distintos clubes de la ciudad de Rosario. Se desea conocer si en promedio los hombres tienden a realizar el "Test de Coordinación de 4 tramos de 10 metros cada uno" en diferentes tiempos (segundos) que las mujeres.
+
+En [este link](https://github.com/florcolombo/Anova/blob/main/base_deportistas.xlsx) encontrarás la base de datos utilizada para el caso en estudio.
 
 ```{r}
 # Librerías
@@ -32,13 +34,15 @@ base <- read_excel("C:/Users/Usuario/Desktop/Facultad Flor/Anova/base_deportista
 head(base)
 ```
 
-En primer lugar, se debe evaluar el cumplimiento de normalidad en ambas poblaciones/muestra/grupos. Se puede comprobar gráficamente a partir de histogramas y también a través de la prueba de Shapiro-Wilks, en el cual se prueba $H_0) \ Y \sim \mathcal{N}(\mu,\sigma^2)$ versus $H_1) \ Y \nsim \mathcal{N}(\mu,\sigma^2)$. La variable respuesta *Y* representa el tiempo (en segundos) que tarda un deportista en realizar el test de coordinación.
+En primer lugar, se evalúa el cumplimiento de normalidad en ambos grupos. Se puede comprobar gráficamente a partir de histogramas y también a través de la prueba de Shapiro-Wilks, en la cual se prueba $H_0) \ Y \sim \mathcal{N}(\mu,\sigma^2)$ versus $H_1) \ Y \nsim \mathcal{N}(\mu,\sigma^2)$. La variable en estudio es el tiempo (en segundos) que tarda un deportista en realizar el test de coordinación (\textit{coord}).
+
+Nota: Por el Teorema Central del Límite, si se cuenta con muchas observaciones no sería necesario evaluar la normalidad de la variable en estudio.
 
 ```{r, echo = FALSE}
 g1 <- base %>% ggplot(aes(coord)) + 
   geom_histogram(data = subset(base,sexo=="Femenino"),fill="#4271AE", colour= "black")+
   labs(x="Tiempo (en segundos)") +
-  ggtitle("Mujeres") +
+  ggtitle("Femenino") +
   xlim(c(10,20)) + 
   ylim(c(0,20))
 
@@ -47,7 +51,7 @@ g2 <- base %>% ggplot(aes(coord)) +
   ylim(c(0,20)) +  
   xlim(c(10,20)) +
   labs(x="Tiempo (en segundos)") +
-  ggtitle("Hombres")
+  ggtitle("Masculino")
 
 ```
 
@@ -61,7 +65,7 @@ shapiro.test(base$coord[base$sexo=='Femenino'])
 shapiro.test(base$coord[base$sexo=='Masculino'])
 ```
 
-En este caso, se concluye que en base a la evidencia muestral y con un nivel de significación del $5\%$ ambas poblaciones se distribuyen de manera normal.
+Tanto por los histogramas como por los resultados de la prueba de Shapiro-Wilks puede pensarse que el tiempo para realizar el test de coordinación tiene distribución gaussiana para ambos grupos (Femenino y Masculino).
 
 Luego, se estudian medidas descriptivas y gráfico de boxplots para ambos grupos.
 
@@ -71,8 +75,8 @@ base %>%
   group_by(sexo) %>% 
   summarise(
     n = n(),
-    media = mean(coord),
-    desvio = sd(coord)
+    promedio = mean(coord),
+    desvio_estandar = sd(coord)
   )
 
 # Boxplots
@@ -88,25 +92,29 @@ ggplot(base, aes(x = sexo, y = coord)) +
 
 Se puede observar que los tiempos en realizar el test de coordinación en mujeres son levemente mayores que los tiempos obtenidos por los varones. A continuación, se evaluará si esta diferencia es significativa.
 
-Antes de llevar a cabo la prueba de igualdad de medias, se debe chequear si las variancias entre grupos son iguales: $H_0) \ \sigma_F^2=\sigma_M^2$ versus $H_1) \ \sigma_F^2 \neq \sigma_M^2$.
+Antes de llevar a cabo la comprobación de igualdad de medias usando la prueba t-student, se debe chequear si las variancias entre grupos son iguales: $H_0) \ \frac{\sigma_F^2}{\sigma_M^2} = 1$ versus $H_1) \ \frac{\sigma_F^2}{\sigma_M^2} \neq 1$.
 
 ```{r}
 # Test de igualdad de variancias
 var.test(coord ~ sexo, base, alternative = "two.sided")
 ```
 
-Se cumple la igualdad de variancias, por lo que se postula la prueba de igualdad de medias: $H_0) \ \mu_F=\mu_M$ versus $H_1) \ \mu_F > \mu_M$.
+No hay evidencia suficiente para rechazar la hipótesis nula. Luego, se postula la prueba de igualdad de medias: $H_0) \ \mu_F - \mu_M = 0$ versus $H_1) \ \mu_F - \mu_M \neq 0$.
 
--   1º enfoque: **Prueba "t de student"**
+La **Prueba "t de student"** usa como estadística:
+
+$ \frac{\bar{y}_F \ - \ \bar{y}_M }{\sqrt{s^2_a (\frac{1}{n_F}+\frac{1}{n_M})}} \sim t_{n_F + n_M -2; \ s^2_a} $
+
+siendo $s^2_a$ la variancia amalgamada de ambos grupos.
 
 ```{r}
 # Test de medias
-t.test(coord ~ sexo, base, alternative = "greater", var.equal = T)
+t.test(coord ~ sexo, base, var.equal = T)
 ```
 
--   2º enfoque: **ANOVA**
+Comparación de dos promedio poblacionales usando el enfoque de Análisis de la Variancia (**ANOVA**).
 
-Se postula el siguiente modelo de efectos fijos: $y_{ij} = \mu + \tau_i + e_{ij}, \ i=\overline{1,2} \ \land \ j=\overline{1,n_i}$, donde:
+Se postula el siguiente modelo de efectos fijos: $y_{ij} = \mu_i + e_{ij} = \mu + \tau_i + e_{ij}, \ i=\overline{1,2} \ \land \ j=\overline{1,n_i}$, donde:
 
 - $y_{ij}:$ resultado del test de coordinación del deportista $j$ del grupo $i$.
 
@@ -118,7 +126,8 @@ Se postula el siguiente modelo de efectos fijos: $y_{ij} = \mu + \tau_i + e_{ij}
 
 Además, $e_{ij} \sim \mathcal{N}(0,\sigma^2)$ *e independientes.*
 
-A continuación, se muestra la tabla ANOVA:
+
+Se compara a variabilidad entre grupos respecto la variabilidad dentro de los grupos. Ello se resume en la tabla ANOVA:
 
 ```{r}
 # Tabla ANOVA
@@ -126,6 +135,11 @@ anova <- aov(coord~sexo, base)
 summary(anova)
 ```
 
-Para ambos enfoques, se obtiene que en base a la evidencia muestral y con un nivel de significación del $5\%$, se rechaza la hipótesis nula, es decir, en promedio a las mujeres les lleva más tiempo realizar el test de coordinación que a los hombres.
+Con ambos enfoques se obtiene que, en base a la evidencia muestral y con un nivel de significación del $5\%$, se rechaza la hipótesis nula, es decir, en promedio a las mujeres les lleva tiempos diferentes para realizar el test de coordinación que a los hombres.
+
+\textit{Notas:}
+- En caso de $H_1$ unilateral, los resultados de la prueba \textit{t-student} podrían no coincidir con el enfoque \textit{ANOVA}.
+
+- Notar que $t^2 = F$.
 
 <div/>

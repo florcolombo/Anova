@@ -18,7 +18,6 @@ Steel y Torrie (1980, págs. 217-218) informaron datos (cortesía de A.c. Linner
 
 ```{r}
 # Librerías
-library(cowplot)
 library(tidyverse)
 library(agricolae)
 library(emmeans)
@@ -38,7 +37,7 @@ base_fitness$tiempo <- as.numeric(base_fitness$tiempo)
 head(base_fitness)
 ```
 
-Se estudian medidas descriptivas y gráficos de boxplots y perfiles para los corredores según edad y categoría.
+Se estudian medidas descriptivas y gráfico de perfiles para los corredores según edad y categoría.
 
 ```{r}
 # Medidas descriptivas
@@ -46,21 +45,9 @@ base_fitness %>%
   group_by(edad, categoria) %>% 
   summarise(
     n = n(),
-    media = mean(tiempo),
-    desvio = sd(tiempo)
+    promedio = mean(tiempo),
+    desvio_estandar = sd(tiempo)
   ) 
-```
-
-```{r}
-# Boxplots. Ojo! Sólo hay dos observaciones por grupo
-ggplot(base_fitness, aes(x = edad, y = tiempo)) +
-  stat_boxplot(geom = "errorbar", 
-               width = 0.2) +
-  facet_wrap(~categoria) +
-  geom_boxplot(fill = "#4271AE", colour = "#1F3552", 
-               alpha = 0.9) +
-  labs(y="Tiempo", x="Edad")
-
 ```
 
 ```{r}
@@ -68,23 +55,38 @@ ggplot(base_fitness, aes(x = edad, y = tiempo)) +
 base_fitness %>%
   group_by(edad, categoria) %>% 
     summarise(
-      media = mean(tiempo)
+      promedio = mean(tiempo)
     ) %>% 
-   ggplot(aes(x=edad,y=media,
+   ggplot(aes(x=edad,y=promedio,
              group=categoria,
              color=categoria)) +
     geom_line() +
     theme_bw() +
-    labs(y="Media", x="Edad",color="Categoria")
+    labs(y="Promedio", x="Edad",color="Categoría")
 ```
 
-Se puede observar que los tiempos en realizar la prueba de 1.5 millas ...
+```{r}
+# Gráfico de perfiles (para evaluar interacción entre factores)
+base_fitness %>%
+  group_by(categoria, edad) %>% 
+    summarise(
+      promedio = mean(tiempo)
+    ) %>% 
+   ggplot(aes(x=categoria,y=promedio,
+             group=edad,
+             color=edad)) +
+    geom_line() +
+    theme_bw() +
+    labs(y="Promedio", x="Categoría",color="Edad")
+```
 
-Se plantea el siguiente modelo de efectos fijos: \
+Se observa que los tiempos en realizar la prueba de 1.5 millas aumentan a medida que la edad del corredor aumenta, y esto sucede cualquiera sea la categoría de fitness. Además, cuánto mejor es el nivel de categoría de fitness del corredor menos tiempo demora en completar la prueba. 
 
-$y_{ijk} = \mu + \tau_i + \beta_j + (\tau \beta)_{ij} + e_{ijk}, \ i=\overline{1,3} \ \land \ j=\overline{1,3}\ \land \ k=\overline{1,2}$, donde:
+Se plantea el siguiente modelo de efectos fijos:\
 
--   $y_{ijk}$: tiempo en realizar la prueba de 1.5 millas del $k-ésimo$ corredor con $i$ años de la categoría $j$.
+$y_{ijk} = \mu_{ij} + e_{ijk} = \mu + \tau_i + \beta_j + (\tau \beta)_{ij} + e_{ijk}, \ i=\overline{1,3} \ \land \ j=\overline{1,3}\ \land \ k=\overline{1,2}$, donde:
+
+-   $y_{ijk}$: tiempo en realizar la prueba de 1.5 millas del corredor $k$ con $i$ años de la categoría $j$.
 
 -   $\mu$: valor de referencia del tiempo en realizar la prueba de 1.5 millas.
 
@@ -94,44 +96,86 @@ $y_{ijk} = \mu + \tau_i + \beta_j + (\tau \beta)_{ij} + e_{ijk}, \ i=\overline{1
 
 -   $(\tau \beta)_{ij}$: efecto interacción entre el edad $i$ y el categoría $j$.
 
--   $e_{ijk}$: error aleatorio del $k-ésimo$ corredor con $i$ años de la categoría $j$.
+-   $e_{ijk}$: error aleatorio del corredor $k$ con $i$ años de la categoría $j$.
 
 Además, $e_{ijk} \sim \mathcal{N}(0,\sigma^2)$ *e independientes.*
 
-En este modelo, a través de la interacción, se postula que el efecto de la edad del corredor en el tiempo que tarda en alcanzar las 1.5 millas depende de su categoría.
+En este modelo, a través de la interacción, se postula que el efecto de la edad del corredor en el tiempo que tarda en alcanzar las 1.5 millas es diferente según su categoría.
 
-A continuación, se muestra la tabla ANOVA:
+A continuación, se muestra el ajuste del modelo y la tabla ANOVA.
+
+La reparametrización que utiliza $R$ para el ajuste del modelo es:
+
+\[ \begin{align*}
+      \tau_1 &= 0 \\
+      \beta_1 &= 0 \\
+      \tau\beta_{11} &= 0 \\
+      \tau\beta_{12} &= 0 \\
+      \tau\beta_{21} &= 0 \\      
+      \tau\beta_{13} &= 0 \\
+      \tau\beta_{31} &= 0 
+   \end{align*}\]
 
 ```{r}
-# Tabla ANOVA
-anova <- aov(tiempo~edad*categoria, base_fitness)
-summary(anova)
-
 # Modelo estimado
 modelo <- lm(tiempo~edad*categoria, base_fitness)
 summary(modelo)
+
+# Tabla ANOVA
+anova <- aov(tiempo~edad*categoria, base_fitness)
+summary(anova)
 ```
 
-El test de hipótesis para responder al efecto interacción se plantea como: $H_0)$ No hay interacción versus $H_1)$ Hay interacción. Que no haya interacción es que el efecto edad es el mismo para cualquier categoría.
+El test de hipótesis para responder al efecto interacción se plantea como: \\ $H_0)$ No hay interacción versus $H_1)$ Hay interacción.
 
-En base a la evidencia muestral y con un nivel de significación del $5\%$, se rechaza la hipótesis nula, es decir, hay efecto interacción entre edad y categoría. El efecto de la edad sobre el cambio del tiempo en realizar las 1.5 millas de los corredores depende de la categoría en la que se encuentran.
+Que no haya interacción significa que el efecto edad es el mismo para cualquier categoría de fitness.
 
-Como la interacción del modelo resultó significativa, no se prueban los efectos principales.
+En base a la evidencia muestral y con un nivel de significación del $5\%$, se rechaza la hipótesis nula, es decir, hay efecto interacción entre edad y categoría. El efecto de la edad sobre el cambio del tiempo en realizar las 1.5 millas de los corredores es diferente según la categoría en la que se encuentran.
 
-# Comparaciones múltiples
+Como la interacción del modelo resultó significativa, se prueban los efectos principales dentro de cada nivel del otro factor.
 
-Para comparar los niveles de edad dentro de cada categoría y viceversa, planteamos las siguientes comparaciones:
+Además a partir del ajuste del modelo, podemos conocer el tiempo promedio en el que un corredor de 50 años de edad y categoría de fitness baja:
+
+$\hat{E(Y_{ijk})} = \hat{\mu} + \hat{\tau_2} + \hat{\beta_2} + \hat{\tau\beta_{22}} = 537 + 35 + 133 + 93 = 798$
+
+Es decir, a un corredor de 50 años con categoría baja de fitness le llevará en promedio 798 segundos (aproximadamente 13 minutos) en completar un recorrido de 1.5 millas.
+
+Para comparar los niveles de categoría dentro de cada edad, planteamos las siguientes comparaciones a través de las siguientes hipótesis:
+
+$H_0)$ \[ \begin{align*}
+      \mu_{i1} &= \mu_{i2} \\
+      \mu_{i2} &= \mu_{i3}
+   \end{align*}\], para $i$ fijo variando de $1$ a $3$.
 
 ```{r}
 joint_tests(modelo, by = "edad")
-joint_tests(modelo, by = "categoria")
+```
 
+Para comparar los niveles de edad dentro de cada categoría, planteamos las siguientes comparaciones a través de las siguientes hipótesis:
+
+$H_0)$ \[ \begin{align*}
+      \mu_{1j} &= \mu_{2j} \\
+      \mu_{2j} &= \mu_{3j}
+   \end{align*}\], para $j$ fijo variando de $1$ a $3$.
+
+```{r}
+joint_tests(modelo, by = "categoria")
+```
+
+A continuación se prueba:
+
+-   Para categoría alta: $H_0)\ \mu_{i1} = \mu_{i'1}$, variando $i$ e $i'$ de $1$ a $3$.
+
+-   Para categoría baja: $H_0)\ \mu_{i2} = \mu_{i'2}$, variando $i$ e $i'$ de $1$ a $3$.
+
+-   Para categoría media: $H_0)\ \mu_{i3} = \mu_{i'3}$, variando $i$ e $i'$ de $1$ a $3$.
+
+```{r}
 emm_s.t <- emmeans(modelo, pairwise ~ edad | categoria)
 emm_s.t
 
 emm_s.t1 <- emmeans(modelo, pairwise ~ categoria | edad)
 emm_s.t1
-
 ```
 
 El análisis se finaliza con la comprobación de los supuestos de normalidad, homocedasticidad e independencia.

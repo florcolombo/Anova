@@ -13,7 +13,7 @@ Análisis en el que se desean estudiar dos (o más) **factores tales que los niv
 
 Damon y Harvey (1987, p. 26) presentaron datos sobre el aumento de peso de pollos sometidos a cuatro tratamientos de alimentación. Los datos originales fueron proporcionados por el Dr. Donald L. Anderson del Departamento de Veterinaria y Ciencias Animales de la Universidad de Massachusetts. 
 
-El experimento implicó la determinación de las ganancias de peso (en gramos) de 10 a 20 semanas de pollos colocados en cuatro tratamientos de alimentación obtenidos de combinaciones de calcio y lisina altos y bajos. Las determinaciones de peso se realizaron utilizando seis pollos en dos corrales de cada uno de los cuatro tratamientos de alimentación. Se puede considerar que los corrales se encuentran anidados dentro de cada tratamientos. 
+El experimento implicó la determinación de las ganancias de peso (en gramos) de 10 a 20 semanas de pollos tratados con cuatro tipos de alimentación obtenidos de combinaciones de calcio y lisina altos y bajos. Las determinaciones de peso se realizaron utilizando seis pollos en dos corrales de cada uno de los cuatro tratamientos de alimentación. Se puede considerar que los corrales se encuentran anidados dentro de cada tratamientos. 
 
 ```{r}
 # Librerías
@@ -43,9 +43,9 @@ ggplot(pollos, aes(x = corral, y = peso))+
 
 Se plantea el siguiente modelo de efectos fijos: \
 
-$y_{ijk} = \mu + \tau_i + \beta_{j(i)} + e_{ijk}, \ i=\overline{1,4} \ \land \ j=\overline{1,2}\ \land \ k=\overline{1,6}$, donde:
+$y_{ijk} = \mu_{ij} + e_{ijk}  = \mu + \tau_i + \beta_{j(i)} + e_{ijk}, \ i=\overline{1,4} \ \land \ j=\overline{1,2}\ \land \ k=\overline{1,6}$, donde:
 
--   $y_{ijk}$: aumento en el peso del $k-ésimo$ pollo sometidos al $i-ésimo$ tratamiento en el corral $j-ésimo$.
+-   $y_{ijk}$: aumento en el peso del pollo $k$ sometido al tratamiento $i$ en el corral $j$.
 
 -   $\mu$: valor de referencia del aumento en el peso.
 
@@ -53,11 +53,27 @@ $y_{ijk} = \mu + \tau_i + \beta_{j(i)} + e_{ijk}, \ i=\overline{1,4} \ \land \ j
 
 -   $\beta_{j(i)}$: efecto del corral $j$ correspondiente al tratamiento $i$.
 
--   $e_{ijk}$: error aleatorio del $k-ésimo$ pollo sometidos al $i-ésimo$ tratamiento en el corral $j-ésimo$.
+-   $e_{ijk}$: error aleatorio del pollo $k$ sometido al tratamiento $i$ en el corral $j$.
 
 Además, $e_{ijk} \sim \mathcal{N}(0,\sigma^2)$ *e independientes.*
 
 En este modelo se postula que los corrales se encuentran anidados a los tratamientos.
+
+Las restricciones que utiliza $R$ para el ajuste del modelo son:
+
+\[ \begin{align*}
+      \tau_1 &= 0 \\
+      \beta_{1(1)} &= 0 \\
+      \beta_{1(2)} &= 0 \\
+      \beta_{1(3)} &= 0 \\
+      \beta_{1(4)} &= 0 
+   \end{align*}\]
+
+```{r}
+# Modelo estimado
+m1 <- lm(peso ~ tratamiento/corral, pollos)
+summary(m1)
+```
 
 La tabla ANOVA del modelo considerado es el siguiente:
 
@@ -65,16 +81,9 @@ La tabla ANOVA del modelo considerado es el siguiente:
 # Tabla ANOVA
 anova <- aov(peso ~ tratamiento/corral, pollos)
 summary(anova)
-
-# Modelo estimado
-m1 <- lm(peso ~ tratamiento/corral, pollos)
-summary(m1)
-
 ```
 
-En base a la evidencia muestral, con un nivel de significación del 5\%, se concluye que no hay efecto significativo de los corrales sobre el aumento de peso de los pollos. Además, los tratamientos no muestran diferencias significativas en la respuesta estudiada. 
-
-En el caso de que el efecto tratamiento sea significativo, se podría continuar realizando comparaciones múltiples o contrastes. 
+No hay evidencia muestral suficiente para concluir que hay efecto significativo de los corrales sobre el aumento de peso de los pollos ($pv= 0.294$). Además, los tratamientos no muestran diferencias significativas en la respuesta estudiada ($pv= 0.539$). 
 
 El análisis se finaliza con la comprobación de los supuestos de normalidad, homocedasticidad e independencia.
 

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Análisis de la Variancia - Un criterio de clasificación</title>
+<title>Análisis de la Variancia - Un o más criterios de clasificación</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -198,9 +198,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">En esta página</h2>
    
   <ul>
-  <li><a href="#comparaciones-múltiples" id="toc-comparaciones-múltiples" class="nav-link active" data-scroll-target="#comparaciones-múltiples">Comparaciones múltiples</a></li>
+  <li><a href="#un-criterio-de-clasificación" id="toc-un-criterio-de-clasificación" class="nav-link active" data-scroll-target="#un-criterio-de-clasificación">Un criterio de clasificación</a>
+  <ul class="collapse">
+  <li><a href="#comparaciones-múltiples" id="toc-comparaciones-múltiples" class="nav-link" data-scroll-target="#comparaciones-múltiples">Comparaciones múltiples</a></li>
   <li><a href="#comprobación-de-supuestos" id="toc-comprobación-de-supuestos" class="nav-link" data-scroll-target="#comprobación-de-supuestos">Comprobación de supuestos</a></li>
-  <li><a href="#base-deportistas.xlsx" id="toc-base-deportistas.xlsx" class="nav-link" data-scroll-target="#base-deportistas.xlsx">Base deportistas.xlsx</a></li>
+  </ul></li>
+  <li><a href="#dos-criterios-de-clasificación" id="toc-dos-criterios-de-clasificación" class="nav-link" data-scroll-target="#dos-criterios-de-clasificación">Dos criterios de clasificación</a></li>
   </ul>
 </nav>
     </div>
@@ -209,7 +212,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Un criterio de clasificación</h1>
+<h1 class="title">Un o más criterios de clasificación</h1>
 </div>
 
 
@@ -228,7 +231,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <div style="text-align: justify">
 
-<p>Análisis comparativo en el que se presenta un <strong>factor de clasificación con dos o más niveles</strong>. Cada nivel se refiere a una población diferente. El objetivo es comparar dichas poblaciones en función de una <strong>variable (respuesta) continua y gaussiana</strong> a través de un <strong>Análisis de la Variancia</strong> (ANOVA).</p>
+<section id="un-criterio-de-clasificación" class="level1">
+<h1>Un criterio de clasificación</h1>
+<p>Análisis comparativo en el que se presenta un <strong>factor de clasificación con dos o más niveles</strong>. Cada nivel se refiere a una población diferente. El objetivo es comparar los promedios de dichas poblaciones en función de una <strong>variable (respuesta) continua y gaussiana</strong> a través de un <strong>Análisis de la Variancia</strong> (ANOVA).</p>
 <p>Los datos brindados corresponden a una muestra de deportistas federados, de 18 a 22 años, que entrenan y compiten en deportes y clubes diferentes de la ciudad de Rosario. Se desea conocer si existen diferencias significativas en el resultado medio del “test de Coordinación en 4 tramos de 10 metros cada tramo” entre los grupos de deportistas. Los cuatro grupos comparados están conformados de la siguiente manera:</p>
 <ul>
 <li>Grupo 1: deportistas jugadores de basquetball del Club Atlético Libertad</li>
@@ -236,6 +241,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Grupo 3: deportistas jugadores de basquetball del Club Atlético Provincial</li>
 <li>Grupo 4: deportistas jugadores de volleyball del Club Atlético Provincial</li>
 </ul>
+<p>En <a href="https://github.com/florcolombo/Anova/blob/main/base_deportistas.xlsx">este link</a> encontrarás la base de datos utilizada para el caso en estudio.</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Librerías</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
@@ -266,7 +272,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                       29 </code></pre>
 </div>
 </div>
-<p>Se evalua el cumplimiento de normalidad en los grupos en estudio. Se puede comprobar a través de la prueba de Shapiro-Wilks, en el cual se prueba <span class="math inline">\(H_0) Y \sim \mathcal{N}(\mu,\sigma^2)\)</span> versus <span class="math inline">\(H_1) Y \nsim \mathcal{N}(\mu,\sigma^2)\)</span>. La variable respuesta <em>Y</em> representa el tiempo (en segundos) que tarda un deportista en realizar el test de coordinación.</p>
+<p>Se evalua el cumplimiento de normalidad en los grupos en estudio. Se puede comprobar a través de la prueba de Shapiro-Wilks, en la cual se prueba <span class="math inline">\(H_0) Y \sim \mathcal{N}(\mu,\sigma^2)\)</span> versus <span class="math inline">\(H_1) Y \nsim \mathcal{N}(\mu,\sigma^2)\)</span>. La variable en estudio representa el tiempo (en segundos) que tarda un deportista en realizar el test de coordinación.</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>(base_grupos<span class="sc">$</span>coord[base_grupos<span class="sc">$</span>grupos<span class="sc">==</span><span class="st">'CALibertad-basquetball'</span>]) </span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -301,7 +307,7 @@ data:  base_grupos$coord[base_grupos$grupos == "CAProvincial-volleyball"]
 W = 0.96929, p-value = 0.5407</code></pre>
 </div>
 </div>
-<p>En este caso, se concluye que en base a la evidencia muestral y con un nivel de significación del <span class="math inline">\(5\%\)</span> las poblaciones se distribuyen de manera normal.</p>
+<p>Puede pensarse que el tiempo para realizar el test de coordinación tiene distribución gaussiana en los cuatro grupos comparados.</p>
 <p>Luego, se estudian medidas descriptivas y gráfico de boxplots para los cuatro grupos de deportistas.</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Estadísticas descriptivas</span></span>
@@ -327,7 +333,7 @@ W = 0.96929, p-value = 0.5407</code></pre>
 <span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">width =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
 <span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">fill =</span> <span class="st">"#4271AE"</span>, <span class="at">colour =</span> <span class="st">"#1F3552"</span>, </span>
 <span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>               <span class="at">alpha =</span> <span class="fl">0.9</span>) <span class="sc">+</span></span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Boxplots de los tiempos en realizar el test de coordinación según grupo de deportistas"</span>) <span class="sc">+</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Distribución de los tiempos en realizar el test de coordinación </span><span class="sc">\n</span><span class="st">según grupo de deportistas"</span>) <span class="sc">+</span></span>
 <span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y=</span><span class="st">"Tiempo (en segundos)"</span>, <span class="at">x=</span><span class="st">"Grupos"</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -337,8 +343,8 @@ W = 0.96929, p-value = 0.5407</code></pre>
 </div>
 </div>
 </div>
-<p>Se puede observar que los tiempos en realizar el test de coordinación difieren dependiendo del grupo de deportistas. A continuación, se evaluará si esta diferencia es significativa.</p>
-<p>Se plantea el siguiente modelo de efectos fijos: <span class="math inline">\(y_{ij} = \mu + \tau_i + e_{ij}, \ i=\overline{1,a} \ \land \ j=\overline{1,n_i}\)</span>, donde:</p>
+<p>Se puede observar que los tiempos en realizar el test de coordinación difieren dependiendo del grupo de deportistas. En particular, se observan diferencias entre los deportes. A continuación, se evaluará si esta diferencia es significativa.</p>
+<p>Se plantea el siguiente modelo de efectos fijos: <span class="math inline">\(y_{ij} = \mu_i + e_{ij} = \mu + \tau_i + e_{ij}, \ i=\overline{1,4} \ \land \ j=\overline{1,n_i}\)</span>, donde:</p>
 <ul>
 <li><p><span class="math inline">\(y_{ij} =\)</span> resultado del test de coordinación del deportista <span class="math inline">\(j\)</span> del grupo <span class="math inline">\(i\)</span>.</p></li>
 <li><p><span class="math inline">\(\mu =\)</span> valor de referencia del test de coordinación.</p></li>
@@ -346,34 +352,9 @@ W = 0.96929, p-value = 0.5407</code></pre>
 <li><p><span class="math inline">\(e_{ij} =\)</span> error aleatorio del deportista <span class="math inline">\(j\)</span> del grupo <span class="math inline">\(i\)</span>.</p></li>
 </ul>
 <p>Además, <span class="math inline">\(e_{ij} \sim \mathcal{N}(0,\sigma^2)\)</span> <em>e independientes.</em></p>
-<p>A continuación, se muestra la tabla ANOVA:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Tabla ANOVA</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>anova <span class="ot">&lt;-</span> <span class="fu">aov</span>(coord<span class="sc">~</span>grupos, base_grupos)</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(anova)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>            Df Sum Sq Mean Sq F value   Pr(&gt;F)    
-grupos       3  58.78  19.594   19.53 3.88e-09 ***
-Residuals   65  65.21   1.003                     
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
-</div>
-</div>
-<p>El test de hipótesis para responder al objetivo resulta: <span class="math inline">\(H_0) \ \tau_a = \tau_b =\tau_c =\tau_d\)</span> versus <span class="math inline">\(H_1) Al \ menos \ un \ \tau_i \neq del \ resto, i=\overline{1,a}\)</span>.</p>
-<p>En base a la evidencia muestral y con un nivel de significación del <span class="math inline">\(5\%\)</span>, se rechaza la hipótesis nula, es decir, existen diferencias signficativas en los tiempos que les lleva realizar el test de coordinación en al menos uno de los grupos de deportistas.</p>
-<section id="comparaciones-múltiples" class="level1">
-<h1>Comparaciones múltiples</h1>
-<p>El problema sobre la comparación de varios grupos que se resuelve a través del ANOVA es interesante y útil, pero no siempre suficiente. En caso de rechazar la hipótesis nula, se concluirá que no todos los tratamientos tienen los mismos promedios poblacionales pero, seguramente, el investigador querrá saber cuál o cuáles son los promedios diferentes o cuáles son iguales entre sí.</p>
-<p>Para conocer entre cuales grupos se presentan las diferencias se utilizará el procedimiento de <strong>Comparaciones múltiples</strong>, el cual tiene como objetivo dar respuesta a las siguientes hipótesis (una vez que se rechazó la igualdad de medias de tratamientos con la prueba F del ANOVA): <span class="math inline">\(H_0) \ \mu_i = \mu_{i'}\)</span> versus <span class="math inline">\(H_1) \mu_i \neq \mu_{i'}, \ i \neq i' \ \land i,i'=\overline{1,a}\)</span>.</p>
-<p>Se compararán los grupos de deportistas estudiados.</p>
-<div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Librería</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(agricolae)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>Se ajusta el modelo para los datos tal como se planteó anteriormente (<span class="math inline">\(y_{ij} = \mu + \tau_i + e_{ij}, \ i=\overline{1,a} \ \land \ j=\overline{1,n_i}\)</span>).</p>
-<div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>modelo <span class="ot">&lt;-</span> <span class="fu">lm</span>(coord<span class="sc">~</span>grupos, base_grupos)</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(modelo)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>modelo <span class="ot">&lt;-</span> <span class="fu">lm</span>(coord<span class="sc">~</span>grupos, base_grupos)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(modelo)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -396,6 +377,30 @@ Residual standard error: 1.002 on 65 degrees of freedom
 Multiple R-squared:  0.4741,    Adjusted R-squared:  0.4498 
 F-statistic: 19.53 on 3 and 65 DF,  p-value: 3.877e-09</code></pre>
 </div>
+</div>
+<p><em>Nota:</em> en el ajuste del modelo se pide una solución para los parámetros del mismo. Por defecto <em>R</em> considera <span class="math inline">\(\tau_1 = 0\)</span>, es decir, que los basquetbolistas del Club Atlético Provincial se toman como grupo de referencia.</p>
+<p>A continuación, se muestra la tabla ANOVA:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Tabla ANOVA</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>anova <span class="ot">&lt;-</span> <span class="fu">aov</span>(coord<span class="sc">~</span>grupos, base_grupos)</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(anova)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            Df Sum Sq Mean Sq F value   Pr(&gt;F)    
+grupos       3  58.78  19.594   19.53 3.88e-09 ***
+Residuals   65  65.21   1.003                     
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<p>La prueba de hipótesis para responder al objetivo resulta: <span class="math inline">\(H_0) \ \mu_1 = \mu_2 =\mu_3 =\mu_4\)</span> versus <span class="math inline">\(H_1) Al \ menos \ un \ \mu_i \neq del \ resto, i=\overline{1,4}\)</span>, que es lo mismo que <span class="math inline">\(H_0) \ \tau_1 = \tau_2 =\tau_3 =\tau_4\)</span> versus <span class="math inline">\(H_1) Al \ menos \ un \ \tau_i \neq del \ resto, i=\overline{1,4}\)</span>.</p>
+<p>En base a la evidencia muestral y con un nivel de significación del <span class="math inline">\(5\%\)</span>, se rechaza la hipótesis nula (<span class="math inline">\(pv=3.88e-09\)</span>), es decir, existen diferencias signficativas en los tiempos que les lleva realizar el test de coordinación en al menos uno de los grupos de deportistas.</p>
+<section id="comparaciones-múltiples" class="level2">
+<h2 class="anchored" data-anchor-id="comparaciones-múltiples">Comparaciones múltiples</h2>
+<p>El problema sobre la comparación de varios grupos que se resuelve a través del ANOVA es interesante y útil, pero no siempre suficiente. En caso de rechazar la hipótesis nula, se concluye que no todos los tratamientos tienen los mismos promedios poblacionales pero, seguramente, el investigador quiere saber cuál o cuáles son los promedios diferentes o cuáles son iguales entre sí.</p>
+<p>Para conocer entre cuales grupos se presentan las diferencias se utiliza el procedimiento de <strong>Comparaciones múltiples</strong>, el cual tiene como objetivo dar respuesta a las siguientes hipótesis (una vez que se rechazó la igualdad de promedios de tratamientos con la prueba F del ANOVA): <span class="math inline">\(H_0) \ \mu_i = \mu_{i'}\)</span> versus <span class="math inline">\(H_1) \mu_i \neq \mu_{i'}, \ i \neq i' \ \land i,i'=\overline{1,a}\)</span>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Librería</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(agricolae)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Se presentan algunos métodos para dar respuesta a nuestra prueba de hipótesis.</p>
 <div class="cell" data-layout-align="center">
@@ -560,10 +565,10 @@ attr(,"class")
 [1] "group"</code></pre>
 </div>
 </div>
-<p>Para cualquiera de los métodos presentados, se concluye que con un nivel de significación del 5%, los tiempos medios en realizar el test de coordinación difieren para los deportistas de distintos deportes (basquetball-volleyball), y no difieren entre diferentes clubes (CAL-CAP).</p>
+<p>Letras diferentes indican grupos que se detectan grupos significativamente distintos. Aquí se concluye, en base a la evidencia muestral y con un nivel de significación del 5%, que el tiempo promedio en realizar el test de coordinación es diferente si se practica volleyball o basquetball. Sin embargo, no se detectan diferencias entre los clubes. Además, se obtuvo el mismo resultado con todas las pruebas.</p>
 </section>
-<section id="comprobación-de-supuestos" class="level1">
-<h1>Comprobación de supuestos</h1>
+<section id="comprobación-de-supuestos" class="level2">
+<h2 class="anchored" data-anchor-id="comprobación-de-supuestos">Comprobación de supuestos</h2>
 <p>La validez de las inferencias extraídas a partir del modelo y su correspondiente ANOVA, las pruebas de hipótesis y los intervalos de confianza, se basan en el cumplimiento de los supuestos postulados. Si el modelo es de efectos fijos, se postula el supuesto de independencia, normalidad e igualdad de variancias para los errores aleatorios.</p>
 <p>Como los errores del modelo son desconocidos, la verificación de los mismos se realiza sobre una estimación de esos errores, habitualmente denominamos residuos. Se utilizarán los <strong>residuos ordinarios</strong> (<span class="math inline">\(\hat e_{ij} = y_{ij}-\bar y_{i.}\)</span>) y los <strong>residuos estandarizados</strong> (<span class="math inline">\(w_{ij} = \frac{\hat e_{ij}}{\sqrt{CME}}\)</span>).</p>
 <div class="cell" data-layout-align="center">
@@ -577,10 +582,13 @@ attr(,"class")
 <p>La normalidad de los residuos se puede probar a través de técnicas gráficas (qq-plot, histogramas) y también a partir de pruebas de hipótesis (Shapiro-Wilks, Lilliefors).</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># qq-plot de cuantiles empíricos versus cuantiles teóricos</span></span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(base_grupos,<span class="fu">aes</span>(<span class="at">sample=</span>res)) <span class="sc">+</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(base_grupos,<span class="fu">aes</span>(<span class="at">sample=</span>res_est)) <span class="sc">+</span></span>
 <span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_qq</span>() <span class="sc">+</span> </span>
 <span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_qq_line</span>() <span class="sc">+</span></span>
-<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"qq-plot de cuantiles empíricos versus cuantiles teóricos"</span>)<span class="sc">+</span></span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Cuantiles empíricos"</span>) <span class="sc">+</span> </span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Cuantiles teóricos"</span>)  </span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -589,34 +597,36 @@ attr(,"class")
 </div>
 </div>
 <div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Test de Shapiro-Wilks (H0) Los errores se distribuyen normales)</span></span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>(base_grupos<span class="sc">$</span>res)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>(base_grupos<span class="sc">$</span>res_est)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Shapiro-Wilk normality test
 
-data:  base_grupos$res
-W = 0.98772, p-value = 0.737</code></pre>
+data:  base_grupos$res_est
+W = 0.98795, p-value = 0.7501</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Test de Lilliefors (H0) Los errores se distribuyen normales)</span></span>
 <span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(nortest) </span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="fu">lillie.test</span>(base_grupos<span class="sc">$</span>res)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="fu">lillie.test</span>(base_grupos<span class="sc">$</span>res_est)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Lilliefors (Kolmogorov-Smirnov) normality test
 
-data:  base_grupos$res
-D = 0.061547, p-value = 0.7458</code></pre>
+data:  base_grupos$res_est
+D = 0.059182, p-value = 0.7952</code></pre>
 </div>
 </div>
+<p>En base a la evidencia muestral y con un nivel de significación del 5%, no se rechaza la normalidad de los errores.</p>
 <ul>
 <li><strong>Homocedasticidad (variancia constante)</strong></li>
 </ul>
-<p>La homocedasticidad de los residuos se puede probar a través de técnicas gráficas (residuos versus valores predichos) y también a partir de pruebas de hipótesis (Levene, Bartlett).</p>
+<p>La homocedasticidad de los residuos se puede probar a través de técnicas gráficas (residuos versus valores predichos) y también a partir de pruebas de hipótesis (Levene, Bartlett u otras).</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Gráfico de w_ij vs. predichos</span></span>
 <span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(base_grupos, <span class="fu">aes</span>(<span class="at">x=</span>grupos, <span class="at">y=</span>res_est)) <span class="sc">+</span></span>
 <span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="sc">-</span><span class="dv">3</span>,<span class="dv">3</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -624,7 +634,7 @@ D = 0.061547, p-value = 0.7458</code></pre>
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Test de Levene (H0) Todas las vcias son iguales vs. H1) Al menos una distina del resto)</span></span>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Test de Levene (H0) Las vcias de todos los grupos son iguales vs. H1) Al menos una distina del resto)</span></span>
 <span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(car)</span>
 <span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a><span class="fu">leveneTest</span>(base_grupos<span class="sc">$</span>res_est, <span class="at">group =</span> base_grupos<span class="sc">$</span>grupos)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -634,21 +644,122 @@ group  3  2.1288 0.1051
       65               </code></pre>
 </div>
 </div>
+<p>Con un nivel de significación del 5%, no existe evidencia muestral suficiente para rechazar que las vcias de todos los grupos son iguales.</p>
 <ul>
 <li><strong>Independencia</strong></li>
 </ul>
 <p>La independencia de los errores se estudia a partir de la lógica del problema. En la práctica, por lo general, no se puede verificar debido a que no existe un orden temporal en las observaciones, en tal caso suele ser útil graficar los residuos en función del orden (o momento) en que fue recolectado el dato.</p>
 <p>Como este supuesto es difícilmente remediable, es necesario poner mucho esfuerzo en el momento de obtener los datos.</p>
-<p>Para nuestro ejemplo, se cumplen los supuestos de normalidad y homocedasticidad. En el caso de que alguno de ellos no se cumpla, se debería recurrir a alguno de los siguientes métodos:</p>
-<ul>
-<li>Transformaciones: Logarítmica, Raíz Cuadrada, etcétera.</li>
-<li>Técnicas no paramétricas: Friedman, Kruskal-Wallis.</li>
-<li>Modelos Lineales Generalizados.</li>
-</ul>
 </section>
-<section id="base-deportistas.xlsx" class="level1">
-<h1>Base deportistas.xlsx</h1>
-<p>En <a href="https://github.com/florcolombo/Anova/blob/main/base_deportistas.xlsx">este link</a> encontrarás la base de datos utilizada para los ejemplos mostrados.</p>
+</section>
+<section id="dos-criterios-de-clasificación" class="level1">
+<h1>Dos criterios de clasificación</h1>
+<p>Ahora bien, pensemos que en lugar de tener un factor de clasificación (grupo), tenemos dos factores:</p>
+<ul>
+<li>Factor 1: Deporte (Volleyball - Básquetball)</li>
+<li>Factor 2: Club (Club Atlético Libertad - Club Atlético Provincial)</li>
+</ul>
+<p>Se realiza un análisis en el que se presentan dos <strong>factores de clasificación (con dos o más niveles cada uno)</strong>. El término <em>cruzado</em> indica que cada nivel de un factor puede combinarse con cada nivel del otro factor. El objetivo es conocer si estos factores influyen en el comportamiento de una <strong>variable (respuesta) continua y gaussiana</strong> a través de un <strong>Análisis de la Variancia</strong> (ANOVA).</p>
+<p>Los datos brindados son los mismos que en el análisis anterior (<a href="https://github.com/florcolombo/Anova/blob/main/base_deportistas.xlsx">link</a>). El objetivo es conocer si existen diferencias significativas en el resultado promedio del “test de Coordinación en 4 tramos de 10 metros cada tramo” entre los deportistas teniendo en cuenta el deporte en el que compiten y el club en el que se entrenan.</p>
+<p>Al análisis exploratorio ya realizado, se le suma un gráfico de perfiles con el fin de evaluar la interacción entre los factores deporte y club.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Gráfico de perfiles </span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>base_factores <span class="sc">%&gt;%</span> </span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(deporte, club) <span class="sc">%&gt;%</span> </span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">media =</span> <span class="fu">mean</span>(coord)</span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>deporte,<span class="at">y=</span>media,</span>
+<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a>           <span class="at">group=</span>club,</span>
+<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a>           <span class="at">color=</span>club)) <span class="sc">+</span></span>
+<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb39-11"><a href="#cb39-11" aria-hidden="true" tabindex="-1"></a>      <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb39-12"><a href="#cb39-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y=</span><span class="st">"Promedio"</span>, <span class="at">x=</span><span class="st">"Deporte"</span>,<span class="at">color=</span><span class="st">"Club"</span>) <span class="sc">+</span> </span>
+<span id="cb39-13"><a href="#cb39-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Gráfico de perfiles: deporte vs. club"</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="un_criterio_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:75.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Se puede observar que los tiempos en realizar el test de coordinación difieren dependiendo del deporte que practican los deportistas, los jugadores de basquetball en promedio realizan el test más rapidamente que los jugadores de volleyball. Con respecto al club, no parece haber diferencias entre los deportistas de clubes distintos.</p>
+<p>Se plantea el siguiente modelo de efectos fijos:<br>
+</p>
+<p><span class="math inline">\(y_{ijk} = \mu_{ij} + e_{ijk} = \mu + \tau_i + \beta_j + (\tau \beta)_{ij} + e_{ijk}, \ i=\overline{1,2} \ \land \ j=\overline{1,2}\ \land \ k=\overline{1,n_i}\)</span>, donde:</p>
+<ul>
+<li><p><span class="math inline">\(y_{ijk}\)</span>: resultado en el test de coordinación del <span class="math inline">\(k-ésimo\)</span> deportista que entrena en <span class="math inline">\(j\)</span> el deporte <span class="math inline">\(i\)</span>.</p></li>
+<li><p><span class="math inline">\(\mu\)</span>: valor de referencia del resultado del test de coordinación.</p></li>
+<li><p><span class="math inline">\(\tau_i\)</span>: efecto deporte <span class="math inline">\(i\)</span>.</p></li>
+<li><p><span class="math inline">\(\tau_i\)</span>: efecto club <span class="math inline">\(j\)</span>.</p></li>
+<li><p><span class="math inline">\((\tau \beta)_{ij}\)</span>: efecto interacción entre el deporte <span class="math inline">\(i\)</span> y el club <span class="math inline">\(j\)</span>.</p></li>
+<li><p><span class="math inline">\(e_{ijk}\)</span>: error aleatorio del deportista <span class="math inline">\(k\)</span> que entrena en <span class="math inline">\(j\)</span> el deporte <span class="math inline">\(i\)</span>.</p></li>
+</ul>
+<p>Además, <span class="math inline">\(e_{ijk} \sim \mathcal{N}(0,\sigma^2)\)</span> <em>e independientes.</em></p>
+<p>En este modelo, a través de la interacción, se postula que el efecto de deporte en el resultado del test de coordinación de los deportistas no es el mismo para los dos clubes.</p>
+<p>La reparametrización que utiliza <span class="math inline">\(R\)</span> para el ajuste del modelo es:</p>
+<p>[ <span class="math display">\[\begin{align*}
+    \tau_1 &amp;= 0 \\
+    \beta_1 &amp;= 0 \\
+    \tau\beta_{11} &amp;= 0 \\
+    \tau\beta_{12} &amp;= 0 \\
+    \tau\beta_{21} &amp;= 0
+\end{align*}\]</span> ]</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Modelo estimado</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>modelo <span class="ot">&lt;-</span> <span class="fu">lm</span>(coord<span class="sc">~</span>deporte<span class="sc">*</span>club, base_factores)</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(modelo)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = coord ~ deporte * club, data = base_factores)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-2.2445 -0.5650  0.0350  0.7055  2.3233 
+
+Coefficients:
+                                               Estimate Std. Error t value
+(Intercept)                                    14.49143    0.26770  54.133
+deporteVolleyball                               1.81524    0.39405   4.607
+clubCLUB ATLETICO PROVINCIAL                    0.10357    0.37859   0.274
+deporteVolleyball:clubCLUB ATLETICO PROVINCIAL  0.05424    0.51140   0.106
+                                               Pr(&gt;|t|)    
+(Intercept)                                     &lt; 2e-16 ***
+deporteVolleyball                              1.96e-05 ***
+clubCLUB ATLETICO PROVINCIAL                      0.785    
+deporteVolleyball:clubCLUB ATLETICO PROVINCIAL    0.916    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.002 on 65 degrees of freedom
+Multiple R-squared:  0.4741,    Adjusted R-squared:  0.4498 
+F-statistic: 19.53 on 3 and 65 DF,  p-value: 3.877e-09</code></pre>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Tabla ANOVA</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>anova <span class="ot">&lt;-</span> <span class="fu">aov</span>(coord<span class="sc">~</span>deporte<span class="sc">*</span>club, base_factores)</span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(anova)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>             Df Sum Sq Mean Sq F value  Pr(&gt;F)    
+deporte       1  58.50   58.50  58.304 1.3e-10 ***
+club          1   0.28    0.28   0.274   0.602    
+deporte:club  1   0.01    0.01   0.011   0.916    
+Residuals    65  65.21    1.00                    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<p>El test de hipótesis para responder al efecto interacción se plantea como: <span class="math inline">\(H_0)\)</span> No hay interacción versus <span class="math inline">\(H_1)\)</span> Hay interacción. Que no haya interacción significa que el efecto deporte es el mismo para cualquier club: <span class="math inline">\(\mu_{11} - \mu_{21} = \mu_{12} - \mu_{22}\)</span>, luego la hipótesis en términos de los parámetros resulta: <span class="math inline">\(H_0) \ \mu_{11} - \mu_{21} = \mu_{12} - \mu_{22}\)</span></p>
+<p>No existe evidencia muestral suficiente para rechazar la hipótesis nula (<span class="math inline">\(pv=0.916\)</span>), es decir, no hay efecto interacción entre deporte y club. El efecto del deporte sobre el cambio del tiempo del test de coordinación de los deportistas es el mismo para los dos clubes (Provincial y Libertad).</p>
+<p>Como la interacción del modelo no resultó significativa, se puede probar que sucede con los efectos principales, a partir de las siguientes hipótesis:</p>
+<ul>
+<li><p>Efecto Deporte: <span class="math inline">\(H_0) \ \tau_{1} = \tau_{2}\)</span> vs.&nbsp;<span class="math inline">\(H_1) \ \tau_{1} \neq \tau_{2}\)</span></p></li>
+<li><p>Efecto Club: <span class="math inline">\(H_0) \ \beta_{1} = \beta_{2}\)</span> vs.&nbsp;<span class="math inline">\(H_1) \ \beta_{1} \neq \beta_{2}\)</span></p></li>
+</ul>
+<p>En base a la evidencia muestral y con un nivel de significación del <span class="math inline">\(5\%\)</span>, se concluye que el tiempo en realizar el test de coordinación difiere significativamente según el deporte que practica el deportista (<span class="math inline">\(pv=1.3e-10\)</span>). En cambio, el tiempo en realizar el test no difiere de manera significativa entre deportistas de ambos clubes (<span class="math inline">\(pv=0.602\)</span>).</p>
 <div>
 
 

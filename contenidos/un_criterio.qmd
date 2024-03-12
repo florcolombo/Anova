@@ -1,5 +1,5 @@
 ---
-title: "Un criterio de clasificación"
+title: "Un o más criterios de clasificación"
 ---
 
 ```{r setup, include=FALSE}
@@ -9,7 +9,9 @@ knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE,
 
 <div style="text-align: justify">
 
-Análisis comparativo en el que se presenta un **factor de clasificación con dos o más niveles**. Cada nivel se refiere a una población diferente. El objetivo es comparar dichas poblaciones en función de una **variable (respuesta) continua y gaussiana** a través de un **Análisis de la Variancia** (ANOVA).
+# Un criterio de clasificación
+
+Análisis comparativo en el que se presenta un **factor de clasificación con dos o más niveles**. Cada nivel se refiere a una población diferente. El objetivo es comparar los promedios de dichas poblaciones en función de una **variable (respuesta) continua y gaussiana** a través de un **Análisis de la Variancia** (ANOVA).
 
 Los datos brindados corresponden a una muestra de deportistas federados, de 18 a 22 años, que entrenan y compiten en deportes y clubes diferentes de la ciudad de Rosario. Se desea conocer si existen diferencias significativas en el resultado medio del "test de Coordinación en 4 tramos de 10 metros cada tramo" entre los grupos de deportistas. Los cuatro grupos comparados están conformados de la siguiente manera:
 
@@ -17,6 +19,8 @@ Los datos brindados corresponden a una muestra de deportistas federados, de 18 a
 -   Grupo 2: deportistas jugadores de volleyball del Club Atlético Libertad
 -   Grupo 3: deportistas jugadores de basquetball del Club Atlético Provincial
 -   Grupo 4: deportistas jugadores de volleyball del Club Atlético Provincial
+
+En [este link](https://github.com/florcolombo/Anova/blob/main/base_deportistas.xlsx) encontrarás la base de datos utilizada para el caso en estudio.
 
 ```{r}
 # Librerías
@@ -39,7 +43,7 @@ head(base_grupos)
 table(base_grupos$grupos)
 ```
 
-Se evalua el cumplimiento de normalidad en los grupos en estudio. Se puede comprobar a través de la prueba de Shapiro-Wilks, en el cual se prueba $H_0) Y \sim \mathcal{N}(\mu,\sigma^2)$ versus $H_1) Y \nsim \mathcal{N}(\mu,\sigma^2)$. La variable respuesta *Y* representa el tiempo (en segundos) que tarda un deportista en realizar el test de coordinación.
+Se evalua el cumplimiento de normalidad en los grupos en estudio. Se puede comprobar a través de la prueba de Shapiro-Wilks, en la cual se prueba $H_0) Y \sim \mathcal{N}(\mu,\sigma^2)$ versus $H_1) Y \nsim \mathcal{N}(\mu,\sigma^2)$. La variable en estudio representa el tiempo (en segundos) que tarda un deportista en realizar el test de coordinación.
 
 ```{r}
 shapiro.test(base_grupos$coord[base_grupos$grupos=='CALibertad-basquetball']) 
@@ -48,7 +52,7 @@ shapiro.test(base_grupos$coord[base_grupos$grupos=='CAProvincial-basquetball'])
 shapiro.test(base_grupos$coord[base_grupos$grupos=='CAProvincial-volleyball'])
 ```
 
-En este caso, se concluye que en base a la evidencia muestral y con un nivel de significación del $5\%$ las poblaciones se distribuyen de manera normal.
+Puede pensarse que el tiempo para realizar el test de coordinación tiene distribución gaussiana en los cuatro grupos comparados.
 
 Luego, se estudian medidas descriptivas y gráfico de boxplots para los cuatro grupos de deportistas.
 
@@ -68,14 +72,14 @@ ggplot(base_grupos, aes(x = grupos, y = coord)) +
                width = 0.2) +
   geom_boxplot(fill = "#4271AE", colour = "#1F3552", 
                alpha = 0.9) +
-  ggtitle("Boxplots de los tiempos en realizar el test de coordinación según grupo de deportistas") +
+  ggtitle("Distribución de los tiempos en realizar el test de coordinación \nsegún grupo de deportistas") +
   labs(y="Tiempo (en segundos)", x="Grupos")
 
 ```
 
-Se puede observar que los tiempos en realizar el test de coordinación difieren dependiendo del grupo de deportistas. A continuación, se evaluará si esta diferencia es significativa.
+Se puede observar que los tiempos en realizar el test de coordinación difieren dependiendo del grupo de deportistas. En particular, se observan diferencias entre los deportes. A continuación, se evaluará si esta diferencia es significativa.
 
-Se plantea el siguiente modelo de efectos fijos: $y_{ij} = \mu + \tau_i + e_{ij}, \ i=\overline{1,a} \ \land \ j=\overline{1,n_i}$, donde:
+Se plantea el siguiente modelo de efectos fijos: $y_{ij} = \mu_i + e_{ij} = \mu + \tau_i + e_{ij}, \ i=\overline{1,4} \ \land \ j=\overline{1,n_i}$, donde:
 
 -   $y_{ij} =$ resultado del test de coordinación del deportista $j$ del grupo $i$.
 
@@ -87,6 +91,13 @@ Se plantea el siguiente modelo de efectos fijos: $y_{ij} = \mu + \tau_i + e_{ij}
 
 Además, $e_{ij} \sim \mathcal{N}(0,\sigma^2)$ *e independientes.*
 
+```{r}
+modelo <- lm(coord~grupos, base_grupos)
+summary(modelo)
+```
+
+*Nota:* en el ajuste del modelo se pide una solución para los parámetros del mismo. Por defecto *R* considera $\tau_1 = 0$, es decir, que los basquetbolistas del Club Atlético Provincial se toman como grupo de referencia.
+
 A continuación, se muestra la tabla ANOVA:
 
 ```{r}
@@ -95,28 +106,19 @@ anova <- aov(coord~grupos, base_grupos)
 summary(anova)
 ```
 
-El test de hipótesis para responder al objetivo resulta: $H_0) \ \tau_a = \tau_b =\tau_c =\tau_d$ versus $H_1) Al \ menos \ un \ \tau_i \neq del \ resto, i=\overline{1,a}$.
+La prueba de hipótesis para responder al objetivo resulta: $H_0) \ \mu_1 = \mu_2 =\mu_3 =\mu_4$ versus $H_1) Al \ menos \ un \ \mu_i \neq del \ resto, i=\overline{1,4}$, que es lo mismo que $H_0) \ \tau_1 = \tau_2 =\tau_3 =\tau_4$ versus $H_1) Al \ menos \ un \ \tau_i \neq del \ resto, i=\overline{1,4}$.
 
-En base a la evidencia muestral y con un nivel de significación del $5\%$, se rechaza la hipótesis nula, es decir, existen diferencias signficativas en los tiempos que les lleva realizar el test de coordinación en al menos uno de los grupos de deportistas.
+En base a la evidencia muestral y con un nivel de significación del $5\%$, se rechaza la hipótesis nula ($pv=3.88e-09$), es decir, existen diferencias signficativas en los tiempos que les lleva realizar el test de coordinación en al menos uno de los grupos de deportistas.
 
-# Comparaciones múltiples
+## Comparaciones múltiples
 
-El problema sobre la comparación de varios grupos que se resuelve a través del ANOVA es interesante y útil, pero no siempre suficiente. En caso de rechazar la hipótesis nula, se concluirá que no todos los tratamientos tienen los mismos promedios poblacionales pero, seguramente, el investigador querrá saber cuál o cuáles son los promedios diferentes o cuáles son iguales entre sí.
+El problema sobre la comparación de varios grupos que se resuelve a través del ANOVA es interesante y útil, pero no siempre suficiente. En caso de rechazar la hipótesis nula, se concluye que no todos los tratamientos tienen los mismos promedios poblacionales pero, seguramente, el investigador quiere saber cuál o cuáles son los promedios diferentes o cuáles son iguales entre sí.
 
-Para conocer entre cuales grupos se presentan las diferencias se utilizará el procedimiento de **Comparaciones múltiples**, el cual tiene como objetivo dar respuesta a las siguientes hipótesis (una vez que se rechazó la igualdad de medias de tratamientos con la prueba F del ANOVA): $H_0) \ \mu_i = \mu_{i'}$ versus $H_1) \mu_i \neq \mu_{i'}, \ i \neq i' \ \land i,i'=\overline{1,a}$.
-
-Se compararán los grupos de deportistas estudiados.
+Para conocer entre cuales grupos se presentan las diferencias se utiliza el procedimiento de **Comparaciones múltiples**, el cual tiene como objetivo dar respuesta a las siguientes hipótesis (una vez que se rechazó la igualdad de promedios de tratamientos con la prueba F del ANOVA): $H_0) \ \mu_i = \mu_{i'}$ versus $H_1) \mu_i \neq \mu_{i'}, \ i \neq i' \ \land i,i'=\overline{1,a}$.
 
 ```{r}
 # Librería
 library(agricolae)
-```
-
-Se ajusta el modelo para los datos tal como se planteó anteriormente ($y_{ij} = \mu + \tau_i + e_{ij}, \ i=\overline{1,a} \ \land \ j=\overline{1,n_i}$).
-
-```{r}
-modelo <- lm(coord~grupos, base_grupos)
-summary(modelo)
 ```
 
 Se presentan algunos métodos para dar respuesta a nuestra prueba de hipótesis.
@@ -126,6 +128,7 @@ Se presentan algunos métodos para dar respuesta a nuestra prueba de hipótesis.
 LSD <- LSD.test(modelo, "grupos", p.adj = "none")
 LSD
 ```
+
 
 ```{r}
 # Método (prueba) de Duncan
@@ -145,9 +148,9 @@ hsd <- HSD.test(modelo, "grupos")
 hsd
 ```
 
-Para cualquiera de los métodos presentados, se concluye que con un nivel de significación del 5%, los tiempos medios en realizar el test de coordinación difieren para los deportistas de distintos deportes (basquetball-volleyball), y no difieren entre diferentes clubes (CAL-CAP).
+Letras diferentes indican grupos que se detectan grupos significativamente distintos. Aquí se concluye, en base a la evidencia muestral y con un nivel de significación del 5\%, que el tiempo promedio en realizar el test de coordinación es diferente si se practica volleyball o basquetball. Sin embargo, no se detectan diferencias entre los clubes. Además, se obtuvo el mismo resultado con todas las pruebas.
 
-# Comprobación de supuestos
+## Comprobación de supuestos
 
 La validez de las inferencias extraídas a partir del modelo y su correspondiente ANOVA, las pruebas de hipótesis y los intervalos de confianza, se basan en el cumplimiento de los supuestos postulados. Si el modelo es de efectos fijos, se postula el supuesto de independencia, normalidad e igualdad de variancias para los errores aleatorios.
 
@@ -165,34 +168,40 @@ La normalidad de los residuos se puede probar a través de técnicas gráficas (
 
 ```{r}
 # qq-plot de cuantiles empíricos versus cuantiles teóricos
-ggplot(base_grupos,aes(sample=res)) +
+ggplot(base_grupos,aes(sample=res_est)) +
   stat_qq() + 
   stat_qq_line() +
-  theme_bw()
+  theme_bw() +
+  ggtitle("qq-plot de cuantiles empíricos versus cuantiles teóricos")+
+  xlab("Cuantiles empíricos") + 
+  ylab("Cuantiles teóricos")  
 
 # Test de Shapiro-Wilks (H0) Los errores se distribuyen normales)
-shapiro.test(base_grupos$res)
+shapiro.test(base_grupos$res_est)
 
 # Test de Lilliefors (H0) Los errores se distribuyen normales)
 library(nortest) 
-lillie.test(base_grupos$res)
+lillie.test(base_grupos$res_est)
 
 ```
+En base a la evidencia muestral y con un nivel de significación del 5\%, no se rechaza la normalidad de los errores.
 
 -   **Homocedasticidad (variancia constante)**
 
-La homocedasticidad de los residuos se puede probar a través de técnicas gráficas (residuos versus valores predichos) y también a partir de pruebas de hipótesis (Levene, Bartlett).
+La homocedasticidad de los residuos se puede probar a través de técnicas gráficas (residuos versus valores predichos) y también a partir de pruebas de hipótesis (Levene, Bartlett u otras).
 
 ```{r}
 # Gráfico de w_ij vs. predichos
 ggplot(base_grupos, aes(x=grupos, y=res_est)) +
   geom_point() +
-  theme_bw()
+  theme_bw() +
+  ylim(-3,3)
 
-# Test de Levene (H0) Todas las vcias son iguales vs. H1) Al menos una distina del resto)
+# Test de Levene (H0) Las vcias de todos los grupos son iguales vs. H1) Al menos una distina del resto)
 library(car)
 leveneTest(base_grupos$res_est, group = base_grupos$grupos)
 ```
+Con un nivel de significación del 5\%, no existe evidencia muestral suficiente para rechazar que las vcias de todos los grupos son iguales.
 
 -   **Independencia**
 
@@ -200,13 +209,101 @@ La independencia de los errores se estudia a partir de la lógica del problema. 
 
 Como este supuesto es difícilmente remediable, es necesario poner mucho esfuerzo en el momento de obtener los datos.
 
-Para nuestro ejemplo, se cumplen los supuestos de normalidad y homocedasticidad. En el caso de que alguno de ellos no se cumpla, se debería recurrir a alguno de los siguientes métodos:
+# Dos criterios de clasificación
 
-- Transformaciones: Logarítmica, Raíz Cuadrada, etcétera.
-- Técnicas no paramétricas: Friedman, Kruskal-Wallis.
-- Modelos Lineales Generalizados.
+Ahora bien, pensemos que en lugar de tener un factor de clasificación (grupo), tenemos dos factores:
 
-# Base deportistas.xlsx
-En [este link](https://github.com/florcolombo/Anova/blob/main/base_deportistas.xlsx) encontrarás la base de datos utilizada para los ejemplos mostrados.
+- Factor 1: Deporte (Volleyball - Básquetball)
+- Factor 2: Club (Club Atlético Libertad - Club Atlético Provincial)
+
+```{r, echo = FALSE}
+base_factores <- read_excel("C:/Users/Usuario/Desktop/Facultad Flor/Anova/base_deportistas.xlsx",
+    sheet = "grupos")
+
+```
+
+Se realiza un análisis en el que se presentan dos **factores de clasificación (con dos o más niveles cada uno)**. El término *cruzado* indica que cada nivel de un factor puede combinarse con cada nivel del otro factor. El objetivo es conocer si estos factores influyen en el comportamiento de una **variable (respuesta) continua y gaussiana** a través de un **Análisis de la Variancia** (ANOVA).
+
+Los datos brindados son los mismos que en el análisis anterior ([link](https://github.com/florcolombo/Anova/blob/main/base_deportistas.xlsx)). El objetivo es conocer si existen diferencias significativas en el resultado promedio del "test de Coordinación en 4 tramos de 10 metros cada tramo" entre los deportistas teniendo en cuenta el deporte en el que compiten y el club en el que se entrenan. 
+
+Al análisis exploratorio ya realizado, se le suma un gráfico de perfiles con el fin de evaluar la interacción entre los factores deporte y club.
+
+```{r}
+# Gráfico de perfiles 
+base_factores %>% 
+  group_by(deporte, club) %>% 
+  summarise(
+    media = mean(coord)
+  ) %>% 
+ggplot(aes(x=deporte,y=media,
+           group=club,
+           color=club)) +
+      geom_line() +
+      theme_bw() +
+  labs(y="Promedio", x="Deporte",color="Club") + 
+  ggtitle("Gráfico de perfiles: deporte vs. club")
+
+```
+
+Se puede observar que los tiempos en realizar el test de coordinación difieren dependiendo del deporte que practican los deportistas, los jugadores de basquetball en promedio realizan el test más rapidamente que los jugadores de volleyball. Con respecto al club, no parece haber diferencias entre los deportistas de clubes distintos. 
+
+
+Se plantea el siguiente modelo de efectos fijos: \
+
+$y_{ijk} = \mu_{ij} + e_{ijk} = \mu + \tau_i + \beta_j + (\tau \beta)_{ij} + e_{ijk}, \ i=\overline{1,2} \ \land \ j=\overline{1,2}\ \land \ k=\overline{1,n_i}$, donde:
+
+-   $y_{ijk}$: resultado en el test de coordinación del $k-ésimo$ deportista que entrena en $j$ el deporte $i$.
+
+-   $\mu$: valor de referencia del resultado del test de coordinación.
+
+-   $\tau_i$: efecto deporte $i$.
+
+-   $\tau_i$: efecto club $j$.
+
+-   $(\tau \beta)_{ij}$: efecto interacción entre el deporte $i$ y el club $j$.
+
+-   $e_{ijk}$: error aleatorio del deportista $k$ que entrena en $j$ el deporte $i$.
+
+Además, $e_{ijk} \sim \mathcal{N}(0,\sigma^2)$ *e independientes.*
+
+En este modelo, a través de la interacción, se postula que el efecto de deporte en el resultado del test de coordinación de los deportistas no es el mismo para los dos clubes.
+
+La reparametrización que utiliza $R$ para el ajuste del modelo es:
+
+\[
+\begin{align*}
+    \tau_1 &= 0 \\
+    \beta_1 &= 0 \\
+    \tau\beta_{11} &= 0 \\
+    \tau\beta_{12} &= 0 \\
+    \tau\beta_{21} &= 0 
+\end{align*}
+\]
+
+```{r}
+# Modelo estimado
+modelo <- lm(coord~deporte*club, base_factores)
+summary(modelo)
+```
+
+```{r}
+# Tabla ANOVA
+anova <- aov(coord~deporte*club, base_factores)
+summary(anova)
+```
+
+El test de hipótesis para responder al efecto interacción se plantea como: $H_0)$ No hay interacción versus $H_1)$ Hay interacción. 
+Que no haya interacción significa que el efecto deporte es el mismo para cualquier club: $\mu_{11} - \mu_{21} = \mu_{12} - \mu_{22}$, luego la hipótesis en términos de los parámetros resulta:
+$H_0) \ \mu_{11} - \mu_{21} = \mu_{12} - \mu_{22}$
+
+No existe evidencia muestral suficiente para rechazar la hipótesis nula ($pv=0.916$), es decir, no hay efecto interacción entre deporte y club. El efecto del deporte sobre el cambio del tiempo del test de coordinación de los deportistas es el mismo para los dos clubes (Provincial y Libertad).
+
+Como la interacción del modelo no resultó significativa, se puede probar que sucede con los efectos principales, a partir de las siguientes hipótesis:
+
+- Efecto Deporte: $H_0) \ \tau_{1} = \tau_{2}$ \quad vs. \quad $H_1) \ \tau_{1} \neq \tau_{2}$
+
+- Efecto Club: $H_0) \ \beta_{1} = \beta_{2}$ \quad vs. \quad $H_1) \ \beta_{1} \neq \beta_{2}$
+
+En base a la evidencia muestral y con un nivel de significación del $5\%$, se concluye que el tiempo en realizar el test de coordinación difiere significativamente según el deporte que practica el deportista ($pv=1.3e-10$). En cambio, el tiempo en realizar el test no difiere de manera significativa entre deportistas de ambos clubes ($pv=0.602$).
 
 <div/>

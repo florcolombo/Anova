@@ -327,7 +327,7 @@ ratio of variances
 </div>
 <p>No hay evidencia suficiente para rechazar la hipótesis nula. Luego, se postula la prueba de igualdad de medias: <span class="math inline">\(H_0) \ \mu_F - \mu_M = 0\)</span> versus <span class="math inline">\(H_1) \ \mu_F - \mu_M \neq 0\)</span>.</p>
 <p>La <strong>Prueba “t de student”</strong> usa como estadística:</p>
-<p>$ t_{n_F + n_M -2; &nbsp;s^2_a} $</p>
+<p><span class="math inline">\(\frac{\bar{y}_F \ - \ \bar{y}_M }{\sqrt{s^2_a (\frac{1}{n_F}+\frac{1}{n_M})}} \sim t_{n_F + n_M -2; \ s^2_a}\)</span></p>
 <p>siendo <span class="math inline">\(s^2_a\)</span> la variancia amalgamada de ambos grupos.</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Test de medias</span></span>
@@ -355,7 +355,7 @@ sample estimates:
 <li><p><span class="math inline">\(e_{ij}:\)</span> error aleatorio del deportista <span class="math inline">\(j\)</span> del grupo <span class="math inline">\(i\)</span>.</p></li>
 </ul>
 <p>Además, <span class="math inline">\(e_{ij} \sim \mathcal{N}(0,\sigma^2)\)</span> <em>e independientes.</em></p>
-<p>Se compara a variabilidad entre grupos respecto la variabilidad dentro de los grupos. Ello se resume en la tabla ANOVA:</p>
+<p>Se compara la variabilidad entre grupos respecto la variabilidad dentro de los grupos. Ello se resume en la tabla ANOVA:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Tabla ANOVA</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>anova <span class="ot">&lt;-</span> <span class="fu">aov</span>(coord<span class="sc">~</span>sexo, base)</span>
@@ -369,9 +369,10 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 </div>
 <p>Con ambos enfoques se obtiene que, en base a la evidencia muestral y con un nivel de significación del <span class="math inline">\(5\%\)</span>, se rechaza la hipótesis nula, es decir, en promedio a las mujeres les lleva tiempos diferentes para realizar el test de coordinación que a los hombres.</p>
-<p> - En caso de <span class="math inline">\(H_1\)</span> unilateral, los resultados de la prueba podrían no coincidir con el enfoque .</p>
+<p><em>Notas:</em></p>
 <ul>
-<li>Notar que <span class="math inline">\(t^2 = F\)</span>.</li>
+<li><p>En caso de <span class="math inline">\(H_1\)</span> unilateral, los resultados de la prueba <em>t-student</em> podrían no coincidir con el enfoque <em>ANOVA</em>.</p></li>
+<li><p>Notar que <span class="math inline">\(t^2 = F\)</span>.</p></li>
 </ul>
 <div>
 

@@ -103,7 +103,7 @@ No hay evidencia suficiente para rechazar la hipótesis nula. Luego, se postula 
 
 La **Prueba "t de student"** usa como estadística:
 
-$ \frac{\bar{y}_F \ - \ \bar{y}_M }{\sqrt{s^2_a (\frac{1}{n_F}+\frac{1}{n_M})}} \sim t_{n_F + n_M -2; \ s^2_a} $
+$\frac{\bar{y}_F \ - \ \bar{y}_M }{\sqrt{s^2_a (\frac{1}{n_F}+\frac{1}{n_M})}} \sim t_{n_F + n_M -2; \ s^2_a}$
 
 siendo $s^2_a$ la variancia amalgamada de ambos grupos.
 
@@ -116,18 +116,17 @@ Comparación de dos promedio poblacionales usando el enfoque de Análisis de la 
 
 Se postula el siguiente modelo de efectos fijos: $y_{ij} = \mu_i + e_{ij} = \mu + \tau_i + e_{ij}, \ i=\overline{1,2} \ \land \ j=\overline{1,n_i}$, donde:
 
-- $y_{ij}:$ resultado del test de coordinación del deportista $j$ del grupo $i$.
+-   $y_{ij}:$ resultado del test de coordinación del deportista $j$ del grupo $i$.
 
-- $\mu:$ valor de referencia del test de coordinación.
+-   $\mu:$ valor de referencia del test de coordinación.
 
-- $\tau_i:$ efecto grupo $i$.
+-   $\tau_i:$ efecto grupo $i$.
 
-- $e_{ij}:$ error aleatorio del deportista $j$ del grupo $i$.
+-   $e_{ij}:$ error aleatorio del deportista $j$ del grupo $i$.
 
 Además, $e_{ij} \sim \mathcal{N}(0,\sigma^2)$ *e independientes.*
 
-
-Se compara a variabilidad entre grupos respecto la variabilidad dentro de los grupos. Ello se resume en la tabla ANOVA:
+Se compara la variabilidad entre grupos respecto la variabilidad dentro de los grupos. Ello se resume en la tabla ANOVA:
 
 ```{r}
 # Tabla ANOVA
@@ -137,9 +136,10 @@ summary(anova)
 
 Con ambos enfoques se obtiene que, en base a la evidencia muestral y con un nivel de significación del $5\%$, se rechaza la hipótesis nula, es decir, en promedio a las mujeres les lleva tiempos diferentes para realizar el test de coordinación que a los hombres.
 
-\textit{Notas:}
-- En caso de $H_1$ unilateral, los resultados de la prueba \textit{t-student} podrían no coincidir con el enfoque \textit{ANOVA}.
+*Notas:*
 
-- Notar que $t^2 = F$.
+-   En caso de $H_1$ unilateral, los resultados de la prueba *t-student* podrían no coincidir con el enfoque *ANOVA*.
+
+-   Notar que $t^2 = F$.
 
 <div/>

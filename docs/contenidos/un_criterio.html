@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Análisis de la Variancia - Un o más criterios de clasificación</title>
+<title>Análisis de la Variancia - Uno o más criterios de clasificación</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -138,7 +138,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../contenidos/un_criterio.html">Un criterio de clasificación</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../contenidos/un_criterio.html">Uno o más criterios de clasificación</a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
@@ -161,13 +161,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../contenidos/un_criterio.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">Un criterio de clasificación</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../contenidos/dos_criterios_aditivos.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Dos criterios de clasificación cruzados sin interacción</span></a>
+ <span class="menu-text">Uno o más criterios de clasificación</span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -212,7 +206,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Un o más criterios de clasificación</h1>
+<h1 class="title">Uno o más criterios de clasificación</h1>
 </div>
 
 
@@ -689,7 +683,7 @@ group  3  2.1288 0.1051
 </p>
 <p><span class="math inline">\(y_{ijk} = \mu_{ij} + e_{ijk} = \mu + \tau_i + \beta_j + (\tau \beta)_{ij} + e_{ijk}, \ i=\overline{1,2} \ \land \ j=\overline{1,2}\ \land \ k=\overline{1,n_i}\)</span>, donde:</p>
 <ul>
-<li><p><span class="math inline">\(y_{ijk}\)</span>: resultado en el test de coordinación del <span class="math inline">\(k-ésimo\)</span> deportista que entrena en <span class="math inline">\(j\)</span> el deporte <span class="math inline">\(i\)</span>.</p></li>
+<li><p><span class="math inline">\(y_{ijk}\)</span>: resultado en el test de coordinación del deportista <span class="math inline">\(k\)</span> que entrena en <span class="math inline">\(j\)</span> el deporte <span class="math inline">\(i\)</span>.</p></li>
 <li><p><span class="math inline">\(\mu\)</span>: valor de referencia del resultado del test de coordinación.</p></li>
 <li><p><span class="math inline">\(\tau_i\)</span>: efecto deporte <span class="math inline">\(i\)</span>.</p></li>
 <li><p><span class="math inline">\(\tau_i\)</span>: efecto club <span class="math inline">\(j\)</span>.</p></li>
@@ -700,12 +694,12 @@ group  3  2.1288 0.1051
 <p>En este modelo, a través de la interacción, se postula que el efecto de deporte en el resultado del test de coordinación de los deportistas no es el mismo para los dos clubes.</p>
 <p>La reparametrización que utiliza <span class="math inline">\(R\)</span> para el ajuste del modelo es:</p>
 <p>[ <span class="math display">\[\begin{align*}
-    \tau_1 &amp;= 0 \\
-    \beta_1 &amp;= 0 \\
-    \tau\beta_{11} &amp;= 0 \\
-    \tau\beta_{12} &amp;= 0 \\
-    \tau\beta_{21} &amp;= 0
-\end{align*}\]</span> ]</p>
+      \tau_1 &amp;= 0 \\
+      \beta_1 &amp;= 0 \\
+      \tau\beta_{11} &amp;= 0 \\
+      \tau\beta_{12} &amp;= 0 \\
+      \tau\beta_{21} &amp;= 0
+   \end{align*}\]</span>]</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Modelo estimado</span></span>
 <span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>modelo <span class="ot">&lt;-</span> <span class="fu">lm</span>(coord<span class="sc">~</span>deporte<span class="sc">*</span>club, base_factores)</span>
@@ -759,7 +753,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <li><p>Efecto Deporte: <span class="math inline">\(H_0) \ \tau_{1} = \tau_{2}\)</span> vs.&nbsp;<span class="math inline">\(H_1) \ \tau_{1} \neq \tau_{2}\)</span></p></li>
 <li><p>Efecto Club: <span class="math inline">\(H_0) \ \beta_{1} = \beta_{2}\)</span> vs.&nbsp;<span class="math inline">\(H_1) \ \beta_{1} \neq \beta_{2}\)</span></p></li>
 </ul>
-<p>En base a la evidencia muestral y con un nivel de significación del <span class="math inline">\(5\%\)</span>, se concluye que el tiempo en realizar el test de coordinación difiere significativamente según el deporte que practica el deportista (<span class="math inline">\(pv=1.3e-10\)</span>). En cambio, el tiempo en realizar el test no difiere de manera significativa entre deportistas de ambos clubes (<span class="math inline">\(pv=0.602\)</span>).</p>
+<p>En base a la evidencia muestral y con un nivel de significación del <span class="math inline">\(5\%\)</span>, se concluye que el tiempo en realizar el test de coordinación difiere significativamente según el deporte que practica el deportista (<span class="math inline">\(pv=1.3e-10\)</span>). En cambio, el tiempo en realizar el test no difiere de manera significativa entre deportistas de los distintos clubes (<span class="math inline">\(pv=0.602\)</span>).</p>
 <div>
 
 

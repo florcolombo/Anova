@@ -3,7 +3,7 @@ title: "Contenidos"
 ---
 
 * [Comparación de dos promedios poblacionales](dos_poblaciones.qmd)
-* [Un o más criterios de clasificación](un_criterio.qmd)
+* [Uno o más criterios de clasificación](un_criterio.qmd)
 * [Dos criterios de clasificación cruzados con interacción](dos_criterios_int.qmd)
 * [Dos o más criterios de clasificación anidados](dos_criterios_anidados.qmd)
 * [Clasificaciones anidadas y cruzadas](anidadas_cruzadas.qmd)

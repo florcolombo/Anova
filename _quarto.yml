@@ -18,10 +18,8 @@ website:
       contents:
         - text: Comparación de dos promedios poblacionales
           file: contenidos/dos_poblaciones.qmd
-        - text: Un criterio de clasificación
+        - text: Uno o más criterios de clasificación
           file: contenidos/un_criterio.qmd
-        - text: Dos criterios de clasificación cruzados sin interacción
-          file: contenidos/dos_criterios_aditivos.qmd
         - text: Dos criterios de clasificación cruzados con interacción
           file: contenidos/dos_criterios_int.qmd
         - text: Dos o más criterios de clasificación anidados

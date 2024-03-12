@@ -1,5 +1,5 @@
 ---
-title: "Un o más criterios de clasificación"
+title: "Uno o más criterios de clasificación"
 ---
 
 ```{r setup, include=FALSE}
@@ -252,7 +252,7 @@ Se plantea el siguiente modelo de efectos fijos: \
 
 $y_{ijk} = \mu_{ij} + e_{ijk} = \mu + \tau_i + \beta_j + (\tau \beta)_{ij} + e_{ijk}, \ i=\overline{1,2} \ \land \ j=\overline{1,2}\ \land \ k=\overline{1,n_i}$, donde:
 
--   $y_{ijk}$: resultado en el test de coordinación del $k-ésimo$ deportista que entrena en $j$ el deporte $i$.
+-   $y_{ijk}$: resultado en el test de coordinación del deportista $k$ que entrena en $j$ el deporte $i$.
 
 -   $\mu$: valor de referencia del resultado del test de coordinación.
 
@@ -270,15 +270,13 @@ En este modelo, a través de la interacción, se postula que el efecto de deport
 
 La reparametrización que utiliza $R$ para el ajuste del modelo es:
 
-\[
-\begin{align*}
-    \tau_1 &= 0 \\
-    \beta_1 &= 0 \\
-    \tau\beta_{11} &= 0 \\
-    \tau\beta_{12} &= 0 \\
-    \tau\beta_{21} &= 0 
-\end{align*}
-\]
+\[ \begin{align*}
+      \tau_1 &= 0 \\
+      \beta_1 &= 0 \\
+      \tau\beta_{11} &= 0 \\
+      \tau\beta_{12} &= 0 \\
+      \tau\beta_{21} &= 0 
+   \end{align*}\]
 
 ```{r}
 # Modelo estimado
@@ -304,6 +302,6 @@ Como la interacción del modelo no resultó significativa, se puede probar que s
 
 - Efecto Club: $H_0) \ \beta_{1} = \beta_{2}$ \quad vs. \quad $H_1) \ \beta_{1} \neq \beta_{2}$
 
-En base a la evidencia muestral y con un nivel de significación del $5\%$, se concluye que el tiempo en realizar el test de coordinación difiere significativamente según el deporte que practica el deportista ($pv=1.3e-10$). En cambio, el tiempo en realizar el test no difiere de manera significativa entre deportistas de ambos clubes ($pv=0.602$).
+En base a la evidencia muestral y con un nivel de significación del $5\%$, se concluye que el tiempo en realizar el test de coordinación difiere significativamente según el deporte que practica el deportista ($pv=1.3e-10$). En cambio, el tiempo en realizar el test no difiere de manera significativa entre deportistas de los distintos clubes ($pv=0.602$).
 
 <div/>

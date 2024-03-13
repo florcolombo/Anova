@@ -322,7 +322,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>En este modelo, a través de la interacción, se postula que el efecto de la edad del corredor en el tiempo que tarda en alcanzar las 1.5 millas es diferente según su categoría.</p>
 <p>A continuación, se muestra el ajuste del modelo y la tabla ANOVA.</p>
 <p>La reparametrización que utiliza <span class="math inline">\(R\)</span> para el ajuste del modelo es:</p>
-<p>[ <span class="math display">\[\begin{align*}
+<p><span class="math display">\[
+  \begin{align*}
       \tau_1 &amp;= 0 \\
       \beta_1 &amp;= 0 \\
       \tau\beta_{11} &amp;= 0 \\
@@ -330,7 +331,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       \tau\beta_{21} &amp;= 0 \\      
       \tau\beta_{13} &amp;= 0 \\
       \tau\beta_{31} &amp;= 0
-   \end{align*}\]</span>]</p>
+   \end{align*}
+\]</span></p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Modelo estimado</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>modelo <span class="ot">&lt;-</span> <span class="fu">lm</span>(tiempo<span class="sc">~</span>edad<span class="sc">*</span>categoria, base_fitness)</span>
@@ -375,7 +377,8 @@ Residuals       9   2888     321
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 </div>
-<p>El test de hipótesis para responder al efecto interacción se plantea como: \ <span class="math inline">\(H_0)\)</span> No hay interacción versus <span class="math inline">\(H_1)\)</span> Hay interacción.</p>
+<p>El test de hipótesis para responder al efecto interacción se plantea como:</p>
+<p><span class="math inline">\(H_0)\)</span> No hay interacción entre edad y categoría versus <span class="math inline">\(H_1)\)</span> Hay interacción entre edad y categoría.</p>
 <p>Que no haya interacción significa que el efecto edad es el mismo para cualquier categoría de fitness.</p>
 <p>En base a la evidencia muestral y con un nivel de significación del <span class="math inline">\(5\%\)</span>, se rechaza la hipótesis nula, es decir, hay efecto interacción entre edad y categoría. El efecto de la edad sobre el cambio del tiempo en realizar las 1.5 millas de los corredores es diferente según la categoría en la que se encuentran.</p>
 <p>Como la interacción del modelo resultó significativa, se prueban los efectos principales dentro de cada nivel del otro factor.</p>
@@ -383,10 +386,10 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <p><span class="math inline">\(\hat{E(Y_{ijk})} = \hat{\mu} + \hat{\tau_2} + \hat{\beta_2} + \hat{\tau\beta_{22}} = 537 + 35 + 133 + 93 = 798\)</span></p>
 <p>Es decir, a un corredor de 50 años con categoría baja de fitness le llevará en promedio 798 segundos (aproximadamente 13 minutos) en completar un recorrido de 1.5 millas.</p>
 <p>Para comparar los niveles de categoría dentro de cada edad, planteamos las siguientes comparaciones a través de las siguientes hipótesis:</p>
-<p><span class="math inline">\(H_0)\)</span> [ <span class="math display">\[\begin{align*}
+<p><span class="math display">\[H_0) \begin{align*}
       \mu_{i1} &amp;= \mu_{i2} \\
       \mu_{i2} &amp;= \mu_{i3}
-   \end{align*}\]</span>], para <span class="math inline">\(i\)</span> fijo variando de <span class="math inline">\(1\)</span> a <span class="math inline">\(3\)</span>.</p>
+   \end{align*}\]</span> para <span class="math inline">\(i\)</span> fijo variando de <span class="math inline">\(1\)</span> a <span class="math inline">\(3\)</span>.</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">joint_tests</span>(modelo, <span class="at">by =</span> <span class="st">"edad"</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -404,10 +407,10 @@ edad = 60:
 </div>
 </div>
 <p>Para comparar los niveles de edad dentro de cada categoría, planteamos las siguientes comparaciones a través de las siguientes hipótesis:</p>
-<p><span class="math inline">\(H_0)\)</span> [ <span class="math display">\[\begin{align*}
+<p><span class="math display">\[H_0) \begin{align*}
       \mu_{1j} &amp;= \mu_{2j} \\
       \mu_{2j} &amp;= \mu_{3j}
-   \end{align*}\]</span>], para <span class="math inline">\(j\)</span> fijo variando de <span class="math inline">\(1\)</span> a <span class="math inline">\(3\)</span>.</p>
+   \end{align*}\]</span> para <span class="math inline">\(j\)</span> fijo variando de <span class="math inline">\(1\)</span> a <span class="math inline">\(3\)</span>.</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">joint_tests</span>(modelo, <span class="at">by =</span> <span class="st">"categoria"</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">

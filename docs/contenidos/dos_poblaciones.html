@@ -237,8 +237,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 6     6 Femenino CLUB ATLETICO PROVINCIAL                 Volleyba…  15.1     51</code></pre>
 </div>
 </div>
-<p>En primer lugar, se evalúa el cumplimiento de normalidad en ambos grupos. Se puede comprobar gráficamente a partir de histogramas y también a través de la prueba de Shapiro-Wilks, en la cual se prueba <span class="math inline">\(H_0) \ Y \sim \mathcal{N}(\mu,\sigma^2)\)</span> versus <span class="math inline">\(H_1) \ Y \nsim \mathcal{N}(\mu,\sigma^2)\)</span>. La variable en estudio es el tiempo (en segundos) que tarda un deportista en realizar el test de coordinación ().</p>
-<p>Nota: Por el Teorema Central del Límite, si se cuenta con muchas observaciones no sería necesario evaluar la normalidad de la variable en estudio.</p>
+<p>En primer lugar, se evalúa el cumplimiento de normalidad en ambos grupos. Se puede comprobar gráficamente a partir de histogramas y también a través de la prueba de Shapiro-Wilks, en la cual se prueba <span class="math inline">\(H_0) \ Y \sim \mathcal{N}(\mu,\sigma^2)\)</span> versus <span class="math inline">\(H_1) \ Y \nsim \mathcal{N}(\mu,\sigma^2)\)</span>. La variable en estudio es el tiempo (en segundos) que tarda un deportista en realizar el test de coordinación (<em>coord</em>).</p>
+<p><em>Nota:</em> Por el Teorema Central del Límite, si se cuenta con muchas observaciones no sería necesario evaluar la normalidad de la variable en estudio.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -290,7 +290,7 @@ W = 0.99461, p-value = 0.8573</code></pre>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">width =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
 <span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">fill =</span> <span class="st">"#4271AE"</span>, <span class="at">colour =</span> <span class="st">"#1F3552"</span>, </span>
 <span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>               <span class="at">alpha =</span> <span class="fl">0.9</span>) <span class="sc">+</span></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Boxplots de los tiempos en realizar el test de coordinación según sexo"</span>) <span class="sc">+</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Distribución de los tiempos en realizar el test de coordinación según sexo"</span>) <span class="sc">+</span></span>
 <span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y=</span><span class="st">"Tiempo (en segundos)"</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -321,8 +321,8 @@ ratio of variances
 </div>
 <p>No hay evidencia suficiente para rechazar la hipótesis nula. Luego, se postula la prueba de igualdad de medias: <span class="math inline">\(H_0) \ \mu_F - \mu_M = 0\)</span> versus <span class="math inline">\(H_1) \ \mu_F - \mu_M \neq 0\)</span>.</p>
 <p>La <strong>Prueba “t de student”</strong> usa como estadística:</p>
-<p><span class="math inline">\(\frac{\bar{y}_F \ - \ \bar{y}_M }{\sqrt{s^2_a (\frac{1}{n_F}+\frac{1}{n_M})}} \sim t_{n_F + n_M -2; \ s^2_a}\)</span></p>
-<p>siendo <span class="math inline">\(s^2_a\)</span> la variancia amalgamada de ambos grupos.</p>
+<p><span class="math inline">\(\frac{\bar{y}_F \ - \ \bar{y}_M }{\sqrt{s^2_a (\frac{1}{n_F}+\frac{1}{n_M})}} \sim t_{n_F + n_M -2; \ S^2_a}\)</span></p>
+<p>siendo <span class="math inline">\(S^2_a= \frac{(n_F-1)S^2_F \ + \ (n_M-1)S^2_M}{n_F + n_M - 2}\)</span> la variancia amalgamada de ambos grupos.</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Test de medias</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(coord <span class="sc">~</span> sexo, base, <span class="at">var.equal =</span> T)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>

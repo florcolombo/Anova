@@ -239,8 +239,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Librerías</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(cowplot)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(base_grupos)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -327,8 +326,9 @@ W = 0.96929, p-value = 0.5407</code></pre>
 <span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">width =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
 <span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">fill =</span> <span class="st">"#4271AE"</span>, <span class="at">colour =</span> <span class="st">"#1F3552"</span>, </span>
 <span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>               <span class="at">alpha =</span> <span class="fl">0.9</span>) <span class="sc">+</span></span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Distribución de los tiempos en realizar el test de coordinación </span><span class="sc">\n</span><span class="st">según grupo de deportistas"</span>) <span class="sc">+</span></span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y=</span><span class="st">"Tiempo (en segundos)"</span>, <span class="at">x=</span><span class="st">"Grupos"</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Distribución de los tiempos en realizar el test de coordinación </span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="st">          </span><span class="sc">\n</span><span class="st">según grupo de deportistas"</span>) <span class="sc">+</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y=</span><span class="st">"Tiempo (en segundos)"</span>, <span class="at">x=</span><span class="st">"Grupos"</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -386,12 +386,15 @@ Residuals   65  65.21   1.003
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 </div>
-<p>La prueba de hipótesis para responder al objetivo resulta: <span class="math inline">\(H_0) \ \mu_1 = \mu_2 =\mu_3 =\mu_4\)</span> versus <span class="math inline">\(H_1) Al \ menos \ un \ \mu_i \neq del \ resto, i=\overline{1,4}\)</span>, que es lo mismo que <span class="math inline">\(H_0) \ \tau_1 = \tau_2 =\tau_3 =\tau_4\)</span> versus <span class="math inline">\(H_1) Al \ menos \ un \ \tau_i \neq del \ resto, i=\overline{1,4}\)</span>.</p>
+<p>La prueba de hipótesis para responder al objetivo resulta:</p>
+<p><span class="math inline">\(H_0) \ \mu_1 = \mu_2 =\mu_3 =\mu_4\)</span> versus <span class="math inline">\(H_1) Al \ menos \ un \ \mu_i \neq del \ resto, i=\overline{1,4}\)</span>, que es lo mismo que:</p>
+<p><span class="math inline">\(H_0) \ \tau_1 = \tau_2 =\tau_3 =\tau_4\)</span> versus <span class="math inline">\(H_1) Al \ menos \ un \ \tau_i \neq del \ resto, i=\overline{1,4}\)</span>.</p>
 <p>En base a la evidencia muestral y con un nivel de significación del <span class="math inline">\(5\%\)</span>, se rechaza la hipótesis nula (<span class="math inline">\(pv=3.88e-09\)</span>), es decir, existen diferencias signficativas en los tiempos que les lleva realizar el test de coordinación en al menos uno de los grupos de deportistas.</p>
 <section id="comparaciones-múltiples" class="level2">
 <h2 class="anchored" data-anchor-id="comparaciones-múltiples">Comparaciones múltiples</h2>
 <p>El problema sobre la comparación de varios grupos que se resuelve a través del ANOVA es interesante y útil, pero no siempre suficiente. En caso de rechazar la hipótesis nula, se concluye que no todos los tratamientos tienen los mismos promedios poblacionales pero, seguramente, el investigador quiere saber cuál o cuáles son los promedios diferentes o cuáles son iguales entre sí.</p>
-<p>Para conocer entre cuales grupos se presentan las diferencias se utiliza el procedimiento de <strong>Comparaciones múltiples</strong>, el cual tiene como objetivo dar respuesta a las siguientes hipótesis (una vez que se rechazó la igualdad de promedios de tratamientos con la prueba F del ANOVA): <span class="math inline">\(H_0) \ \mu_i = \mu_{i'}\)</span> versus <span class="math inline">\(H_1) \mu_i \neq \mu_{i'}, \ i \neq i' \ \land i,i'=\overline{1,a}\)</span>.</p>
+<p>Para conocer entre cuales grupos se presentan las diferencias se utiliza el procedimiento de <strong>Comparaciones múltiples</strong>, el cual tiene como objetivo dar respuesta a las siguientes hipótesis (una vez que se rechazó la igualdad de promedios de tratamientos con la prueba F del ANOVA):</p>
+<p><span class="math inline">\(H_0) \ \mu_i = \mu_{i'}\)</span> versus <span class="math inline">\(H_1) \mu_i \neq \mu_{i'}, \ i \neq i' \ \land i,i'=\overline{1,a}\)</span>.</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Librería</span></span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(agricolae)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -564,11 +567,12 @@ attr(,"class")
 <section id="comprobación-de-supuestos" class="level2">
 <h2 class="anchored" data-anchor-id="comprobación-de-supuestos">Comprobación de supuestos</h2>
 <p>La validez de las inferencias extraídas a partir del modelo y su correspondiente ANOVA, las pruebas de hipótesis y los intervalos de confianza, se basan en el cumplimiento de los supuestos postulados. Si el modelo es de efectos fijos, se postula el supuesto de independencia, normalidad e igualdad de variancias para los errores aleatorios.</p>
-<p>Como los errores del modelo son desconocidos, la verificación de los mismos se realiza sobre una estimación de esos errores, habitualmente denominamos residuos. Se utilizarán los <strong>residuos ordinarios</strong> (<span class="math inline">\(\hat e_{ij} = y_{ij}-\bar y_{i.}\)</span>) y los <strong>residuos estandarizados</strong> (<span class="math inline">\(w_{ij} = \frac{\hat e_{ij}}{\sqrt{CME}}\)</span>).</p>
+<p>Como los errores del modelo son desconocidos, la verificación de los mismos se realiza sobre una estimación de esos errores, habitualmente denominamos residuos. Se pueden utilizar los <strong>residuos ordinarios</strong> (<span class="math inline">\(\hat e_{ij} = y_{ij}-\hat y_{ij}\)</span>), los <strong>residuos estandarizados</strong> (<span class="math inline">\(w_{ij} = \frac{\hat e_{ij}}{\sqrt{CME}}\)</span>) o los <strong>residuos estudentizados</strong> (<span class="math inline">\(t_{ij} = \frac{\hat e_{ij}}{\sqrt{CME*(1-h_{ii})}}\)</span>, donde <span class="math inline">\(h_{ii}\)</span> es el elemento <span class="math inline">\(ii\)</span> de la matriz diagonal <span class="math inline">\(H\)</span>).</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Residuos ordinarios y estandarizados</span></span>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Residuos ordinarios, estandarizados y estudentizados</span></span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>base_grupos<span class="sc">$</span>res <span class="ot">&lt;-</span> <span class="fu">residuals</span>(modelo)</span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>base_grupos<span class="sc">$</span>res_est <span class="ot">&lt;-</span> <span class="fu">rstandard</span>(modelo)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>base_grupos<span class="sc">$</span>res_estandar <span class="ot">&lt;-</span> <span class="fu">rstandard</span>(modelo)</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>base_grupos<span class="sc">$</span>res_estud <span class="ot">&lt;-</span> <span class="fu">rstudent</span>(modelo)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li><strong>Normalidad</strong></li>
@@ -576,7 +580,7 @@ attr(,"class")
 <p>La normalidad de los residuos se puede probar a través de técnicas gráficas (qq-plot, histogramas) y también a partir de pruebas de hipótesis (Shapiro-Wilks, Lilliefors).</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># qq-plot de cuantiles empíricos versus cuantiles teóricos</span></span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(base_grupos,<span class="fu">aes</span>(<span class="at">sample=</span>res_est)) <span class="sc">+</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(base_grupos,<span class="fu">aes</span>(<span class="at">sample=</span>res_estud)) <span class="sc">+</span></span>
 <span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_qq</span>() <span class="sc">+</span> </span>
 <span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_qq_line</span>() <span class="sc">+</span></span>
 <span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
@@ -591,23 +595,23 @@ attr(,"class")
 </div>
 </div>
 <div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Test de Shapiro-Wilks (H0) Los errores se distribuyen normales)</span></span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>(base_grupos<span class="sc">$</span>res_est)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>(base_grupos<span class="sc">$</span>res_estud)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Shapiro-Wilk normality test
 
-data:  base_grupos$res_est
-W = 0.98795, p-value = 0.7501</code></pre>
+data:  base_grupos$res_estud
+W = 0.98665, p-value = 0.6745</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Test de Lilliefors (H0) Los errores se distribuyen normales)</span></span>
 <span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(nortest) </span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="fu">lillie.test</span>(base_grupos<span class="sc">$</span>res_est)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="fu">lillie.test</span>(base_grupos<span class="sc">$</span>res_estud)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Lilliefors (Kolmogorov-Smirnov) normality test
 
-data:  base_grupos$res_est
-D = 0.059182, p-value = 0.7952</code></pre>
+data:  base_grupos$res_estud
+D = 0.063954, p-value = 0.6914</code></pre>
 </div>
 </div>
 <p>En base a la evidencia muestral y con un nivel de significación del 5%, no se rechaza la normalidad de los errores.</p>
@@ -616,8 +620,8 @@ D = 0.059182, p-value = 0.7952</code></pre>
 </ul>
 <p>La homocedasticidad de los residuos se puede probar a través de técnicas gráficas (residuos versus valores predichos) y también a partir de pruebas de hipótesis (Levene, Bartlett u otras).</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Gráfico de w_ij vs. predichos</span></span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(base_grupos, <span class="fu">aes</span>(<span class="at">x=</span>grupos, <span class="at">y=</span>res_est)) <span class="sc">+</span></span>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Gráfico de t_ij vs. predichos</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(base_grupos, <span class="fu">aes</span>(<span class="at">x=</span>grupos, <span class="at">y=</span>res_estud)) <span class="sc">+</span></span>
 <span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
 <span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
 <span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="sc">-</span><span class="dv">3</span>,<span class="dv">3</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -628,13 +632,14 @@ D = 0.059182, p-value = 0.7952</code></pre>
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Test de Levene (H0) Las vcias de todos los grupos son iguales vs. H1) Al menos una distina del resto)</span></span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(car)</span>
-<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a><span class="fu">leveneTest</span>(base_grupos<span class="sc">$</span>res_est, <span class="at">group =</span> base_grupos<span class="sc">$</span>grupos)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Test de Levene (H0) Las vcias de todos los grupos son iguales </span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="co">#                 vs. H1) Al menos una distinta del resto)</span></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(car)</span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a><span class="fu">leveneTest</span>(base_grupos<span class="sc">$</span>res_estud, <span class="at">group =</span> base_grupos<span class="sc">$</span>grupos)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Levene's Test for Homogeneity of Variance (center = median)
       Df F value Pr(&gt;F)
-group  3  2.1288 0.1051
+group  3  2.1081 0.1077
       65               </code></pre>
 </div>
 </div>
@@ -693,13 +698,15 @@ group  3  2.1288 0.1051
 <p>Además, <span class="math inline">\(e_{ijk} \sim \mathcal{N}(0,\sigma^2)\)</span> <em>e independientes.</em></p>
 <p>En este modelo, a través de la interacción, se postula que el efecto de deporte en el resultado del test de coordinación de los deportistas no es el mismo para los dos clubes.</p>
 <p>La reparametrización que utiliza <span class="math inline">\(R\)</span> para el ajuste del modelo es:</p>
-<p>[ <span class="math display">\[\begin{align*}
+<p><span class="math display">\[
+\begin{align*}
       \tau_1 &amp;= 0 \\
       \beta_1 &amp;= 0 \\
       \tau\beta_{11} &amp;= 0 \\
       \tau\beta_{12} &amp;= 0 \\
       \tau\beta_{21} &amp;= 0
-   \end{align*}\]</span>]</p>
+   \end{align*}
+\]</span></p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Modelo estimado</span></span>
 <span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>modelo <span class="ot">&lt;-</span> <span class="fu">lm</span>(coord<span class="sc">~</span>deporte<span class="sc">*</span>club, base_factores)</span>

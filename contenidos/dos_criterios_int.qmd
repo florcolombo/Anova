@@ -106,7 +106,8 @@ A continuación, se muestra el ajuste del modelo y la tabla ANOVA.
 
 La reparametrización que utiliza $R$ para el ajuste del modelo es:
 
-\[ \begin{align*}
+$$
+  \begin{align*}
       \tau_1 &= 0 \\
       \beta_1 &= 0 \\
       \tau\beta_{11} &= 0 \\
@@ -114,7 +115,8 @@ La reparametrización que utiliza $R$ para el ajuste del modelo es:
       \tau\beta_{21} &= 0 \\      
       \tau\beta_{13} &= 0 \\
       \tau\beta_{31} &= 0 
-   \end{align*}\]
+   \end{align*}
+$$
 
 ```{r}
 # Modelo estimado
@@ -126,7 +128,9 @@ anova <- aov(tiempo~edad*categoria, base_fitness)
 summary(anova)
 ```
 
-El test de hipótesis para responder al efecto interacción se plantea como: \\ $H_0)$ No hay interacción versus $H_1)$ Hay interacción.
+El test de hipótesis para responder al efecto interacción se plantea como:
+
+$H_0)$ No hay interacción entre edad y categoría versus $H_1)$ Hay interacción entre edad y categoría.
 
 Que no haya interacción significa que el efecto edad es el mismo para cualquier categoría de fitness.
 
@@ -142,10 +146,10 @@ Es decir, a un corredor de 50 años con categoría baja de fitness le llevará e
 
 Para comparar los niveles de categoría dentro de cada edad, planteamos las siguientes comparaciones a través de las siguientes hipótesis:
 
-$H_0)$ \[ \begin{align*}
+$$H_0) \begin{align*}
       \mu_{i1} &= \mu_{i2} \\
       \mu_{i2} &= \mu_{i3}
-   \end{align*}\], para $i$ fijo variando de $1$ a $3$.
+   \end{align*}$$ para $i$ fijo variando de $1$ a $3$.
 
 ```{r}
 joint_tests(modelo, by = "edad")
@@ -153,10 +157,10 @@ joint_tests(modelo, by = "edad")
 
 Para comparar los niveles de edad dentro de cada categoría, planteamos las siguientes comparaciones a través de las siguientes hipótesis:
 
-$H_0)$ \[ \begin{align*}
+$$H_0) \begin{align*}
       \mu_{1j} &= \mu_{2j} \\
       \mu_{2j} &= \mu_{3j}
-   \end{align*}\], para $j$ fijo variando de $1$ a $3$.
+   \end{align*}$$ para $j$ fijo variando de $1$ a $3$.
 
 ```{r}
 joint_tests(modelo, by = "categoria")

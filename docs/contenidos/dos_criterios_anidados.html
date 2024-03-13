@@ -259,13 +259,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Además, <span class="math inline">\(e_{ijk} \sim \mathcal{N}(0,\sigma^2)\)</span> <em>e independientes.</em></p>
 <p>En este modelo se postula que los corrales se encuentran anidados a los tratamientos.</p>
 <p>Las restricciones que utiliza <span class="math inline">\(R\)</span> para el ajuste del modelo son:</p>
-<p>[ <span class="math display">\[\begin{align*}
+<p><span class="math display">\[ \begin{align*}
       \tau_1 &amp;= 0 \\
       \beta_{1(1)} &amp;= 0 \\
       \beta_{1(2)} &amp;= 0 \\
       \beta_{1(3)} &amp;= 0 \\
       \beta_{1(4)} &amp;= 0
-   \end{align*}\]</span>]</p>
+   \end{align*}
+\]</span></p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Modelo estimado</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>m1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(peso <span class="sc">~</span> tratamiento<span class="sc">/</span>corral, pollos)</span>

@@ -25,7 +25,6 @@ En [este link](https://github.com/florcolombo/Anova/blob/main/base_deportistas.x
 ```{r}
 # Librerías
 library(readxl)
-library(cowplot)
 library(tidyverse)
 ```
 
@@ -72,7 +71,8 @@ ggplot(base_grupos, aes(x = grupos, y = coord)) +
                width = 0.2) +
   geom_boxplot(fill = "#4271AE", colour = "#1F3552", 
                alpha = 0.9) +
-  ggtitle("Distribución de los tiempos en realizar el test de coordinación \nsegún grupo de deportistas") +
+  ggtitle("Distribución de los tiempos en realizar el test de coordinación 
+          \nsegún grupo de deportistas") +
   labs(y="Tiempo (en segundos)", x="Grupos")
 
 ```
@@ -106,7 +106,11 @@ anova <- aov(coord~grupos, base_grupos)
 summary(anova)
 ```
 
-La prueba de hipótesis para responder al objetivo resulta: $H_0) \ \mu_1 = \mu_2 =\mu_3 =\mu_4$ versus $H_1) Al \ menos \ un \ \mu_i \neq del \ resto, i=\overline{1,4}$, que es lo mismo que $H_0) \ \tau_1 = \tau_2 =\tau_3 =\tau_4$ versus $H_1) Al \ menos \ un \ \tau_i \neq del \ resto, i=\overline{1,4}$.
+La prueba de hipótesis para responder al objetivo resulta: 
+
+$H_0) \ \mu_1 = \mu_2 =\mu_3 =\mu_4$ versus $H_1) Al \ menos \ un \ \mu_i \neq del \ resto, i=\overline{1,4}$, que es lo mismo que:
+
+$H_0) \ \tau_1 = \tau_2 =\tau_3 =\tau_4$ versus $H_1) Al \ menos \ un \ \tau_i \neq del \ resto, i=\overline{1,4}$.
 
 En base a la evidencia muestral y con un nivel de significación del $5\%$, se rechaza la hipótesis nula ($pv=3.88e-09$), es decir, existen diferencias signficativas en los tiempos que les lleva realizar el test de coordinación en al menos uno de los grupos de deportistas.
 
@@ -114,7 +118,9 @@ En base a la evidencia muestral y con un nivel de significación del $5\%$, se r
 
 El problema sobre la comparación de varios grupos que se resuelve a través del ANOVA es interesante y útil, pero no siempre suficiente. En caso de rechazar la hipótesis nula, se concluye que no todos los tratamientos tienen los mismos promedios poblacionales pero, seguramente, el investigador quiere saber cuál o cuáles son los promedios diferentes o cuáles son iguales entre sí.
 
-Para conocer entre cuales grupos se presentan las diferencias se utiliza el procedimiento de **Comparaciones múltiples**, el cual tiene como objetivo dar respuesta a las siguientes hipótesis (una vez que se rechazó la igualdad de promedios de tratamientos con la prueba F del ANOVA): $H_0) \ \mu_i = \mu_{i'}$ versus $H_1) \mu_i \neq \mu_{i'}, \ i \neq i' \ \land i,i'=\overline{1,a}$.
+Para conocer entre cuales grupos se presentan las diferencias se utiliza el procedimiento de **Comparaciones múltiples**, el cual tiene como objetivo dar respuesta a las siguientes hipótesis (una vez que se rechazó la igualdad de promedios de tratamientos con la prueba F del ANOVA): 
+
+$H_0) \ \mu_i = \mu_{i'}$ versus $H_1) \mu_i \neq \mu_{i'}, \ i \neq i' \ \land i,i'=\overline{1,a}$.
 
 ```{r}
 # Librería
@@ -154,12 +160,13 @@ Letras diferentes indican grupos que se detectan grupos significativamente disti
 
 La validez de las inferencias extraídas a partir del modelo y su correspondiente ANOVA, las pruebas de hipótesis y los intervalos de confianza, se basan en el cumplimiento de los supuestos postulados. Si el modelo es de efectos fijos, se postula el supuesto de independencia, normalidad e igualdad de variancias para los errores aleatorios.
 
-Como los errores del modelo son desconocidos, la verificación de los mismos se realiza sobre una estimación de esos errores, habitualmente denominamos residuos. Se utilizarán los **residuos ordinarios** ($\hat e_{ij} = y_{ij}-\bar y_{i.}$) y los **residuos estandarizados** ($w_{ij} = \frac{\hat e_{ij}}{\sqrt{CME}}$).
+Como los errores del modelo son desconocidos, la verificación de los mismos se realiza sobre una estimación de esos errores, habitualmente denominamos residuos. Se pueden utilizar los **residuos ordinarios** ($\hat e_{ij} = y_{ij}-\hat y_{ij}$), los **residuos estandarizados** ($w_{ij} = \frac{\hat e_{ij}}{\sqrt{CME}}$) o los **residuos estudentizados** ($t_{ij} = \frac{\hat e_{ij}}{\sqrt{CME*(1-h_{ii})}}$, donde $h_{ii}$ es el elemento $ii$ de la matriz diagonal $H$).
 
 ```{r}
-# Residuos ordinarios y estandarizados
+# Residuos ordinarios, estandarizados y estudentizados
 base_grupos$res <- residuals(modelo)
-base_grupos$res_est <- rstandard(modelo)
+base_grupos$res_estandar <- rstandard(modelo)
+base_grupos$res_estud <- rstudent(modelo)
 ```
 
 -   **Normalidad**
@@ -168,7 +175,7 @@ La normalidad de los residuos se puede probar a través de técnicas gráficas (
 
 ```{r}
 # qq-plot de cuantiles empíricos versus cuantiles teóricos
-ggplot(base_grupos,aes(sample=res_est)) +
+ggplot(base_grupos,aes(sample=res_estud)) +
   stat_qq() + 
   stat_qq_line() +
   theme_bw() +
@@ -177,11 +184,11 @@ ggplot(base_grupos,aes(sample=res_est)) +
   ylab("Cuantiles teóricos")  
 
 # Test de Shapiro-Wilks (H0) Los errores se distribuyen normales)
-shapiro.test(base_grupos$res_est)
+shapiro.test(base_grupos$res_estud)
 
 # Test de Lilliefors (H0) Los errores se distribuyen normales)
 library(nortest) 
-lillie.test(base_grupos$res_est)
+lillie.test(base_grupos$res_estud)
 
 ```
 En base a la evidencia muestral y con un nivel de significación del 5\%, no se rechaza la normalidad de los errores.
@@ -191,15 +198,16 @@ En base a la evidencia muestral y con un nivel de significación del 5\%, no se 
 La homocedasticidad de los residuos se puede probar a través de técnicas gráficas (residuos versus valores predichos) y también a partir de pruebas de hipótesis (Levene, Bartlett u otras).
 
 ```{r}
-# Gráfico de w_ij vs. predichos
-ggplot(base_grupos, aes(x=grupos, y=res_est)) +
+# Gráfico de t_ij vs. predichos
+ggplot(base_grupos, aes(x=grupos, y=res_estud)) +
   geom_point() +
   theme_bw() +
   ylim(-3,3)
 
-# Test de Levene (H0) Las vcias de todos los grupos son iguales vs. H1) Al menos una distina del resto)
+# Test de Levene (H0) Las vcias de todos los grupos son iguales 
+#                 vs. H1) Al menos una distinta del resto)
 library(car)
-leveneTest(base_grupos$res_est, group = base_grupos$grupos)
+leveneTest(base_grupos$res_estud, group = base_grupos$grupos)
 ```
 Con un nivel de significación del 5\%, no existe evidencia muestral suficiente para rechazar que las vcias de todos los grupos son iguales.
 
@@ -270,13 +278,15 @@ En este modelo, a través de la interacción, se postula que el efecto de deport
 
 La reparametrización que utiliza $R$ para el ajuste del modelo es:
 
-\[ \begin{align*}
+$$ 
+\begin{align*}
       \tau_1 &= 0 \\
       \beta_1 &= 0 \\
       \tau\beta_{11} &= 0 \\
       \tau\beta_{12} &= 0 \\
       \tau\beta_{21} &= 0 
-   \end{align*}\]
+   \end{align*}
+$$
 
 ```{r}
 # Modelo estimado

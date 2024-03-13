@@ -34,9 +34,9 @@ base <- read_excel("C:/Users/Usuario/Desktop/Facultad Flor/Anova/base_deportista
 head(base)
 ```
 
-En primer lugar, se evalúa el cumplimiento de normalidad en ambos grupos. Se puede comprobar gráficamente a partir de histogramas y también a través de la prueba de Shapiro-Wilks, en la cual se prueba $H_0) \ Y \sim \mathcal{N}(\mu,\sigma^2)$ versus $H_1) \ Y \nsim \mathcal{N}(\mu,\sigma^2)$. La variable en estudio es el tiempo (en segundos) que tarda un deportista en realizar el test de coordinación (\textit{coord}).
+En primer lugar, se evalúa el cumplimiento de normalidad en ambos grupos. Se puede comprobar gráficamente a partir de histogramas y también a través de la prueba de Shapiro-Wilks, en la cual se prueba $H_0) \ Y \sim \mathcal{N}(\mu,\sigma^2)$ versus $H_1) \ Y \nsim \mathcal{N}(\mu,\sigma^2)$. La variable en estudio es el tiempo (en segundos) que tarda un deportista en realizar el test de coordinación (*coord*).
 
-Nota: Por el Teorema Central del Límite, si se cuenta con muchas observaciones no sería necesario evaluar la normalidad de la variable en estudio.
+*Nota:* Por el Teorema Central del Límite, si se cuenta con muchas observaciones no sería necesario evaluar la normalidad de la variable en estudio.
 
 ```{r, echo = FALSE}
 g1 <- base %>% ggplot(aes(coord)) + 
@@ -85,7 +85,7 @@ ggplot(base, aes(x = sexo, y = coord)) +
                width = 0.2) +
   geom_boxplot(fill = "#4271AE", colour = "#1F3552", 
                alpha = 0.9) +
-  ggtitle("Boxplots de los tiempos en realizar el test de coordinación según sexo") +
+  ggtitle("Distribución de los tiempos en realizar el test de coordinación según sexo") +
   labs(y="Tiempo (en segundos)")
 
 ```
@@ -103,9 +103,9 @@ No hay evidencia suficiente para rechazar la hipótesis nula. Luego, se postula 
 
 La **Prueba "t de student"** usa como estadística:
 
-$\frac{\bar{y}_F \ - \ \bar{y}_M }{\sqrt{s^2_a (\frac{1}{n_F}+\frac{1}{n_M})}} \sim t_{n_F + n_M -2; \ s^2_a}$
+$\frac{\bar{y}_F \ - \ \bar{y}_M }{\sqrt{s^2_a (\frac{1}{n_F}+\frac{1}{n_M})}} \sim t_{n_F + n_M -2; \ S^2_a}$
 
-siendo $s^2_a$ la variancia amalgamada de ambos grupos.
+siendo $S^2_a= \frac{(n_F-1)S^2_F \ + \ (n_M-1)S^2_M}{n_F + n_M - 2}$ la variancia amalgamada de ambos grupos.
 
 ```{r}
 # Test de medias
